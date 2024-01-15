@@ -1,29 +1,41 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <TopNav :userObj="userData" />
+  <router-view />
 </template>
 
+<script>
+import TopNav from "./components/TopNav.vue";
+
+export default {
+  name: "App",
+  components: {
+    TopNav,
+  },
+  data() {
+    return {
+      userData: {
+        name: 'Jorge',
+
+      }
+    };
+  },
+};
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+@import "@/scss/_variables.scss";
+html {
+  body {
+    margin: 0;
+    font-family: "Nunito Sans", sans-serif;
+    div#app {
+      background-color: $dark;
+      max-height: 100dvh;
+      max-width: 100dvw;
+      height: 100dvh;
+      width: 100dvw;
+      color: $primary;
+      // scroll-behavior: smooth;
     }
   }
 }
