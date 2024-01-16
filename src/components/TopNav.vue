@@ -2,7 +2,9 @@
   <nav>
     <ul>
       <li>
-        <h1><RouterLink to="/">Vendata</RouterLink></h1>
+        <h1>
+          <RouterLink to="/">Relleno</RouterLink>
+        </h1>
       </li>
       <li>
         <RouterLink to="/questions">Encuestas</RouterLink>
@@ -35,17 +37,43 @@ nav {
   flex-direction: row;
   width: 100dvw;
   height: 86px;
+
   ul {
     margin: 0;
     padding: 0;
     display: flex;
+    width: 100%;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    position: relative;
+
     li {
       list-style: none;
+      flex: 1;
       display: grid;
       place-content: center;
-      margin-left: 16px;
+      border: none;
+      border-bottom: none;
+      border-bottom-width: 0%;
+      transition: border-bottom-width 0.05s;
+
+      &:first-child {
+        &:hover{
+          border-bottom: none;
+          cursor: auto;
+          a {
+            cursor: pointer;
+          }
+        }
+      }
+
+      &:hover {
+        height: calc(auto - 4px);
+        cursor: pointer;
+        border: none;
+        border-bottom: 4px solid $primary;
+        border-bottom-width: 100%;
+      }
 
       h1 {
         margin: 0;
@@ -54,26 +82,25 @@ nav {
       a {
         text-decoration: none;
         color: $primary;
-        text-decoration-line: none;
-        transition: text-decoration-line 3s;
       }
 
-      a:hover {
-        cursor: pointer;
-        text-decoration-line: underline;
-        text-decoration-thickness: 4px;
-        text-underline-offset: 8px;
-        text-decoration-color: $primary;
-      }
-    }
+      &.login-btn {
+        background-color: $primary;
+        padding: 16px;
+        transition: background-color 0.4s;
 
-    li.login-btn {
-      background-color: $primary;
-      padding: 16px;
-      a {
-        color: $dark;
-        font-weight: bolder;
+        a {
+          color: $dark;
+          font-weight: bolder;
+        }
+        &:hover {
+          background-color: $dark;
+          a {
+            color: $primary;
+          }
+        }
       }
+
     }
   }
 }
