@@ -17,10 +17,14 @@
         <div class="full-btn">Entrar</div>
       </router-link>
     </div>
+    <div class="config">
+      <img width="32" height="32" :src="configIcon" alt="config button">
+    </div>
   </nav>
 </template>
 
 <script>
+import configSvg from '@/assets/config.svg'
 import PollBtn from "@/components/PollBtn.vue";
 export default {
   name: "TopNav",
@@ -31,7 +35,9 @@ export default {
     userData: Object,
   },
   data() {
-    return {};
+    return {
+      configIcon: configSvg
+    };
   },
 };
 </script>
