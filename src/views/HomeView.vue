@@ -42,6 +42,7 @@ div.home {
     h1 {
       text-align: center;
       font-weight: 300;
+      color: $primary-light;
     }
   }
 }
