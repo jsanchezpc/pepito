@@ -1,4 +1,6 @@
-# pepito
+# Relleno
+App para crear encuestas avanzadas que te ayudan a entender mejor las respuestas. ¡Únete hoy y haz que tu opinión cuente!
+
 
 ## Project setup
 ```
