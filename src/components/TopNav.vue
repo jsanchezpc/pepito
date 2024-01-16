@@ -1,24 +1,20 @@
 <template>
   <nav>
-    <ul>
-      <li>
-        <h1>
-          <RouterLink to="/">Relleno</RouterLink>
-        </h1>
-      </li>
-      <li>
-        <RouterLink to="/questions">Encuestas</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/answers">Respuestas</RouterLink>
-      </li>
-      <li v-if="userObj.length > 0">
-        <RouterLink to="/profile">Cuenta</RouterLink>
-      </li>
-      <li v-else class="login-btn">
-        <RouterLink to="/login">Crear cuenta</RouterLink>
-      </li>
-    </ul>
+    <div>
+      <h1>Relleno</h1>
+    </div>
+    <div>
+      <router-link to="/"> Encuestas </router-link>
+    </div>
+    <div>
+      <router-link to="/answers"> Respuestas </router-link>
+    </div>
+    <div v-if="userData">
+      <div class="full-btn">Encuestar</div> 
+    </div>
+    <div v-else>
+      <div class="full-btn">Registrarse</div>
+    </div>
   </nav>
 </template>
 
@@ -26,81 +22,67 @@
 export default {
   name: "TopNav",
   props: {
-    userObj: Object,
+    userData: Object
+  },
+  data() {
+    return {
+
+    };
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 nav {
   display: flex;
   flex-direction: row;
-  width: 100dvw;
-  height: 86px;
-
-  ul {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: flex-start;
-    position: relative;
-
-    li {
-      list-style: none;
-      flex: 1;
-      display: grid;
-      place-content: center;
-      border: none;
-      border-bottom: none;
-      border-bottom-width: 0%;
-      transition: border-bottom-width 0.05s;
-
-      &:first-child {
-        &:hover{
-          border-bottom: none;
-          cursor: auto;
-          a {
-            cursor: pointer;
-          }
-        }
-      }
-
-      &:hover {
-        height: calc(auto - 4px);
-        cursor: pointer;
-        border: none;
+  margin: 0 auto;
+  width: 90dvw;
+  justify-content: stretch;
+  div {
+    display: grid;
+    flex: 1;
+    place-content: center;
+    border: none;
+    &:hover {
         border-bottom: 4px solid $primary;
-        border-bottom-width: 100%;
-      }
+        * {
+            cursor: pointer;
+        }
+    }
 
-      h1 {
-        margin: 0;
-      }
+    &:first-of-type, &:last-of-type {
+        border: none;
+        border-bottom: none;
+    }
 
-      a {
+    h1 {
+        font-weight: 900;
+        cursor: pointer;
+    }
+    
+    a {
         text-decoration: none;
         color: $primary;
+        font-weight: 800;
+    }
+
+    div.full-btn {
+      background-color: $primary;
+      border-radius: 32px;
+      color: $dark;
+      font-weight: bold;
+      padding: 16px;
+      width: 255px;
+      border: none;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      transition: background-color 0.4s;
+      cursor: pointer;
+      &:hover {
+        background-color: $primary-s1;
       }
-
-      &.login-btn {
-        background-color: $primary;
-        padding: 16px;
-        transition: background-color 0.4s;
-
-        a {
-          color: $dark;
-          font-weight: bolder;
-        }
-        &:hover {
-          background-color: $dark;
-          a {
-            color: $primary;
-          }
-        }
-      }
-
     }
   }
 }

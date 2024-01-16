@@ -1,15 +1,15 @@
 <template>
-  <TopNav :userObj="userData" />
+  <TopNav :userData="userData" />
   <router-view />
 </template>
 
 <script>
-import TopNav from "./components/TopNav.vue";
+import TopNav from '@/components/TopNav.vue';
 
 export default {
   name: "App",
   components: {
-    TopNav,
+    TopNav
   },
   data() {
     return {
