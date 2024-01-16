@@ -66,7 +66,8 @@ nav {
     }
 
     &:first-of-type,
-    &:last-of-type {
+    &:last-of-type,
+    &:nth-last-of-type(2) {
       border: none;
       border-bottom: none;
     }
