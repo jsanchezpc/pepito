@@ -4,16 +4,18 @@
       <h1>Relleno</h1>
     </div>
     <div>
-      <router-link to="/"> Encuestas </router-link>
+      <router-link to="/">Encuestas</router-link>
     </div>
     <div>
-      <router-link to="/answers"> Respuestas </router-link>
+      <router-link to="/answers">Respuestas</router-link>
     </div>
-    <div v-if="userData">
+    <div v-if="!userData">
       <PollBtn />
     </div>
     <div v-else>
-      <div class="full-btn">Registrarse</div>
+      <router-link to="/login">
+        <div class="full-btn">Entrar</div>
+      </router-link>
     </div>
   </nav>
 </template>
@@ -22,8 +24,8 @@
 import PollBtn from "@/components/PollBtn.vue";
 export default {
   name: "TopNav",
-  components: { 
-    PollBtn 
+  components: {
+    PollBtn
   },
   props: {
     userData: Object,
@@ -41,13 +43,17 @@ nav {
   margin: 0 auto;
   width: 90dvw;
   justify-content: stretch;
+  height: calc(7dvh);
+
   div {
     display: grid;
     flex: 1;
     place-content: center;
     border: none;
+
     &:hover {
       border-bottom: 4px solid $primary;
+
       * {
         cursor: pointer;
       }
@@ -75,14 +81,15 @@ nav {
       border-radius: 32px;
       color: $dark;
       font-weight: bold;
-      padding: 16px;
-      width: 255px;
+      padding: 8px;
+      width: 172px;
       border: none;
       box-sizing: border-box;
       -moz-box-sizing: border-box;
       -webkit-box-sizing: border-box;
       transition: background-color 0.4s;
       cursor: pointer;
+
       &:hover {
         background-color: $primary-s1;
       }

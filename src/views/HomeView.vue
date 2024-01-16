@@ -29,7 +29,7 @@ export default {
 div.home {
   width: 80dvw;
   margin: 0 auto;
-  height: calc(100dvh - 255px);
+  height: calc(100dvh - 7dvh);
   div.no-poll {
     position: relative;
     display: grid;
