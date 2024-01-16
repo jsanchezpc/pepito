@@ -15,7 +15,6 @@ export default {
     return {
       userData: {
         name: 'Jorge',
-
       }
     };
   },

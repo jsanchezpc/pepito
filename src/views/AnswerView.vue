@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <div v-if="pollList" class="poll-list">blabla bla</div>
+  <div class="answer-view">
+    <div v-if="pollList" class="answers-list">blabla bla</div>
     <div class="no-poll">
       <img :src="draw" alt="poll draw" />
       <h1>¡Empieza creando una encuesta!</h1>
@@ -11,11 +11,11 @@
 
 <script>
 import PollBtn from "@/components/PollBtn.vue";
-import drawSvg from "@/assets/quest.svg";
+import drawSvg from "@/assets/no-ans.svg";
 export default {
-  name: "HomeView",
+  name: "AnswerView",
   components: {
-    PollBtn
+    PollBtn,
   },
   data() {
     return {
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-div.home {
+div.answer-view {
   width: 80dvw;
   margin: 0 auto;
   height: calc(100dvh - 255px);

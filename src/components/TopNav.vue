@@ -10,7 +10,7 @@
       <router-link to="/answers"> Respuestas </router-link>
     </div>
     <div v-if="userData">
-      <div class="full-btn">Encuestar</div> 
+      <PollBtn />
     </div>
     <div v-else>
       <div class="full-btn">Registrarse</div>
@@ -19,15 +19,17 @@
 </template>
 
 <script>
+import PollBtn from "@/components/PollBtn.vue";
 export default {
   name: "TopNav",
+  components: { 
+    PollBtn 
+  },
   props: {
-    userData: Object
+    userData: Object,
   },
   data() {
-    return {
-
-    };
+    return {};
   },
 };
 </script>
@@ -45,26 +47,27 @@ nav {
     place-content: center;
     border: none;
     &:hover {
-        border-bottom: 4px solid $primary;
-        * {
-            cursor: pointer;
-        }
+      border-bottom: 4px solid $primary;
+      * {
+        cursor: pointer;
+      }
     }
 
-    &:first-of-type, &:last-of-type {
-        border: none;
-        border-bottom: none;
+    &:first-of-type,
+    &:last-of-type {
+      border: none;
+      border-bottom: none;
     }
 
     h1 {
-        font-weight: 900;
-        cursor: pointer;
+      font-weight: 900;
+      cursor: pointer;
     }
-    
+
     a {
-        text-decoration: none;
-        color: $primary;
-        font-weight: 800;
+      text-decoration: none;
+      color: $primary;
+      font-weight: 800;
     }
 
     div.full-btn {
