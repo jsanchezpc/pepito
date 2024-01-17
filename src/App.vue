@@ -25,19 +25,14 @@ export default {
     };
   },
   mounted() {
-    // Verificar el tamaño de la pantalla al cargar la página
     this.checkWindowSize();
-
-    // Agregar un listener para verificar el tamaño de la pantalla al cambiar
     window.addEventListener('resize', this.checkWindowSize);
   },
   beforeUnmount() {
-    // Limpiar el listener al destruir el componente
     window.removeEventListener('resize', this.checkWindowSize);
   },
   methods: {
     checkWindowSize() {
-      // Actualizar la variable isMobile basada en el tamaño de la pantalla
       this.isMobile = window.innerWidth < 785;
     }
   }
