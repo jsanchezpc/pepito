@@ -9,7 +9,7 @@
     <div>
       <router-link to="/answers">Respuestas</router-link>
     </div>
-    <div v-if="!userData">
+    <div v-if="userData">
       <PollBtn />
     </div>
     <div v-else>

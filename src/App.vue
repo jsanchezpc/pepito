@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { useUserStore } from '@/store/user-store';
 import TopNav from '@/components/TopNav.vue';
 import TopNavPortrait from '@/components/TopNavPortrait.vue';
 
@@ -18,9 +19,7 @@ export default {
   },
   data() {
     return {
-      userData: {
-        name: 'Jorge',
-      },
+      userData: useUserStore().get_user, 
       isMobile: false
     };
   },

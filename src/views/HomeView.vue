@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <div v-if="pollList" class="poll-list">blabla bla</div>
-    <div class="no-poll">
+    <div v-if="pollList && user.length > 1" class="poll-list">blabla bla</div>
+    <div v-else class="no-poll">
+      <h2><span style="font-weight: 300;">Hola,</span> {{ user.username }}</h2>
       <img :src="draw" alt="poll draw" />
       <h1>¡Empieza creando una encuesta!</h1>
       <PollBtn />
@@ -12,6 +13,7 @@
 <script>
 import PollBtn from "@/components/PollBtn.vue";
 import drawSvg from "@/assets/quest.svg";
+import { useUserStore } from "@/store/user-store";
 export default {
   name: "HomeView",
   components: {
@@ -20,6 +22,7 @@ export default {
   data() {
     return {
       draw: drawSvg,
+      user: useUserStore().get_user
     };
   },
 };

@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        user:  null ,
-        token: null 
+        user:  {username: 'Jorge', email: "admin@admin.es"},
+        token: "hola" 
     }),
     getters: {
         get_user: (state) => state.user,
@@ -11,6 +11,7 @@ export const useUserStore = defineStore('user', {
     },
     actions: {
         update_user(new_user) {
+            // this.remove_token()
             this.user = new_user
         },
         update_token(new_token) {
