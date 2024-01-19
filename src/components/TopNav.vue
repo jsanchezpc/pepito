@@ -9,7 +9,7 @@
     <div>
       <router-link to="/answers">Respuestas</router-link>
     </div>
-    <div v-if="userData">
+    <div v-if="user">
       <PollBtn />
     </div>
     <div v-else>
@@ -33,7 +33,7 @@ export default {
     PollBtn
   },
   props: {
-    userData: Object,
+    user: Object,
   },
   data() {
     return {

@@ -27,7 +27,7 @@
 
             <div @click="logIn()" class="full-btn">Entrar</div>
             <hr />
-            <p>¿Aun no tienes cuenta?</p>
+            <p><em>¿Aun no tienes cuenta?</em></p>
             <div @click="switchForm()" class="outline-btn">Crear cuenta</div>
           </div>
         </form>
@@ -70,7 +70,7 @@
 
             <div @click="signup()" class="full-btn">Crear cuenta</div>
             <hr />
-            <p>¿Ya tienes cuenta?</p>
+            <p><em>¿Ya tienes cuenta?</em></p>
             <div @click="switchForm()" class="outline-btn">Entrar</div>
           </div>
         </form>
@@ -106,12 +106,6 @@ export default {
       this.form_state = !this.form_state;
     },
     signup() {
-        console.log({
-            username: this.signName,
-            email: this.signEmail,
-            password: this.signPass,
-            language: Intl.DateTimeFormat().resolvedOptions().locale // temporal
-        })
         axios
         .post(`${process.env.VUE_APP_API_URL}/signup`, {
             username: this.signName,
@@ -137,8 +131,8 @@ export default {
     logIn() {
         axios
         .post(`${process.env.VUE_APP_API_URL}/login`, {
-            email: this.signEmail,
-            password: this.signPass,
+            email: this.logEmail,
+            password: this.logPass,
         })
         .then((response) => {
           if (response.data.ok === true) {

@@ -18,28 +18,15 @@
         </div>
         <div class="nav-el">
           <div class="nav-icon">
-            <img
-              width="32"
-              height="32"
-              :src="answersIcon"
-              alt="config button"
-            />
+            <img width="32" height="32" :src="answersIcon" alt="config button" />
           </div>
           <div class="nav-link">
-            <router-link @click="toggleMenu()" to="/answers"
-              >Respuestas</router-link
-            >
+            <router-link @click="toggleMenu()" to="/answers">Respuestas</router-link>
           </div>
         </div>
         <div class="nav-el config">
           <div class="nav-icon">
-            <img
-              width="32"
-              @click="toggleMenu()"
-              height="32"
-              :src="configIcon"
-              alt="config button"
-            />
+            <img width="32" @click="toggleMenu()" height="32" :src="configIcon" alt="config button" />
           </div>
           <div class="nav-link">
             <p @click="showConfig()">Configuración</p>
@@ -129,25 +116,33 @@ div.portrait-menu {
       flex-direction: column;
       width: 100dvw;
       height: 100dvh;
+      margin: 0 auto;
+
 
       div {
         margin-top: 32px;
+        max-height: 64px;
+        a,
+        p {
 
-        a, p {
           font-size: 1.8em;
           text-decoration: none;
           color: $primary;
           font-weight: 500;
+          text-align: left;
+        }
+
+        h1 {
+          text-align: center;
         }
       }
 
       div.nav-el {
         display: flex;
         flex-direction: row;
-        margin: 0 auto;
 
         div.nav-icon {
-          flex: 0.2;
+          flex: 0.5;
           display: grid;
           place-content: center;
         }

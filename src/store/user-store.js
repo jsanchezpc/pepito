@@ -1,18 +1,36 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        user:  localStorage.getItem('user') ? {username: 'Jorge', email: "admin@admin.es"} : null,
-        token: "hola" 
+        user: null,
+        token: null
     }),
     getters: {
         get_user: (state) => state.user,
         get_token: (state) => state.token
     },
     actions: {
+        async findUser(id) {
+            try {
+                const response = await axios.post(`${process.env.VUE_APP_API_URL}/checkUser`, {
+                    _id: id
+                });
+                this.user = response.data.user;
+                this.token = response.data.token;
+                localStorage.setItem('user', JSON.stringify(response.data.user))
+                localStorage.setItem('token', response.data.token)
+            }
+             catch (error) {
+                console.error(error);
+            }
+        },
         update_user(new_user) {
             // this.remove_token()
             this.user = new_user
+        },
+        remove_user() {
+            this.user = null
         },
         update_token(new_token) {
             this.token = new_token

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <TopNav v-if="!isMobile" :user="user" @displayConfig="showConfig()"  />
-    <TopNavPortrait v-else :user="user" @displayConfig="showConfig()" />
-    <router-view />
+    <TopNav v-if="!isMobile && isUserLoaded" :user="user" @displayConfig="showConfig()" />
+    <TopNavPortrait v-else-if="isUserLoaded" :user="user" @displayConfig="showConfig()" />
+    <router-view v-if="isUserLoaded || toLog" :user="user" />
   </div>
 </template>
 
@@ -19,13 +19,15 @@ export default {
   },
   data() {
     return {
-      user: '',
+      user: null,
+      isUserLoaded: false,
+      toLog: false,
       isMobile: false,
       configBoo: false
     };
   },
   mounted() {
-    this.loadUser();
+    this.checkUser();
     this.checkWindowSize();
     window.addEventListener('resize', this.checkWindowSize);
   },
@@ -33,15 +35,30 @@ export default {
     window.removeEventListener('resize', this.checkWindowSize);
   },
   methods: {
-    loadUser() {
-      return this.user = useUserStore().get_user
+    checkUser() {
+      if (localStorage.getItem('user') && localStorage.getItem('token')) {
+        useUserStore().findUser(JSON.parse(localStorage.getItem('user'))._id)
+          .then(() => {
+            this.user = useUserStore().get_user;
+            this.isUserLoaded = true;
+          })
+          .catch(error => {
+            console.error("Error finding user:", error);
+            this.$router.push('/login');
+            this.isUserLoaded = false;
+          });
+      } else {
+        this.toLog = true
+        this.isUserLoaded = false;
+        this.$router.push('/login');
+      }
     },
     checkWindowSize() {
       this.isMobile = window.innerWidth < 785;
     },
     showConfig() {
-      console.log('ajsdjasdjasjdjasd')
       this.configBoo = !this.configBoo
+      console.log('jaja')
     }
   }
 };
@@ -52,7 +69,7 @@ export default {
 
 html {
   max-width: 100dvw;
-  overflow: hidden;
+
   body {
     margin: 0;
     font-family: "Nunito Sans", sans-serif;
@@ -66,6 +83,10 @@ html {
       color: $primary;
       // scroll-behavior: smooth;
     }
+  }
+
+  tldx-lmi-shadow-root {
+    display: none;
   }
 }
 </style>
