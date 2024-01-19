@@ -92,7 +92,7 @@ div.portrait-menu {
     position: absolute;
     right: 16px;
     top: 4px;
-    z-index: 1000;
+    z-index: 60;
 
     img {
       width: 64px;
@@ -106,7 +106,7 @@ div.portrait-menu {
   }
 
   div.menu-container {
-    z-index: 999;
+    z-index: 59;
     width: 100dvw;
     height: 100dvh;
 

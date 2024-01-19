@@ -2,6 +2,7 @@
   <div id="app">
     <TopNav v-if="!isMobile && isUserLoaded" :user="user" @displayConfig="showConfig()" />
     <TopNavPortrait v-else-if="isUserLoaded" :user="user" @displayConfig="showConfig()" />
+    <ConfigComponent v-if="configBoo" />
     <router-view v-if="isUserLoaded || toLog" :user="user" />
   </div>
 </template>
@@ -10,12 +11,14 @@
 import { useUserStore } from '@/store/user-store';
 import TopNav from '@/components/TopNav.vue';
 import TopNavPortrait from '@/components/TopNavPortrait.vue';
+import ConfigComponent from '@/components/ConfigComponent.vue';
 
 export default {
   name: "App",
   components: {
     TopNav,
-    TopNavPortrait
+    TopNavPortrait,
+    ConfigComponent
   },
   data() {
     return {
@@ -58,7 +61,6 @@ export default {
     },
     showConfig() {
       this.configBoo = !this.configBoo
-      console.log('jaja')
     }
   }
 };
@@ -81,6 +83,7 @@ html {
       height: 100dvh;
       width: 100dvw;
       color: $primary;
+      position: fixed;
       // scroll-behavior: smooth;
     }
   }
