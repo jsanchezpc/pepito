@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <div v-if="pollList && user.length > 1" class="poll-list">blabla bla</div>
+    <div v-if="pollList && user && user.length > 1" class="poll-list">blabla bla</div>
     <div v-else class="no-poll">
-      <h2><span style="font-weight: 300;">Hola,</span> {{ user.username }}</h2>
+      <h2 v-if="user"><span style="font-weight: 300;">Hola,</span> {{ user.username }}</h2>
       <img :src="draw" alt="poll draw" />
       <h1>¡Empieza creando una encuesta!</h1>
       <PollBtn />
@@ -22,7 +22,8 @@ export default {
   data() {
     return {
       draw: drawSvg,
-      user: useUserStore().get_user
+      user: useUserStore().get_user,
+      pollList: null,
     };
   },
 };

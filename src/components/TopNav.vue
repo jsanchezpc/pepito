@@ -17,9 +17,10 @@
         <div class="full-btn">Entrar</div>
       </router-link>
     </div>
-    <div class="config">
+    <div @click="showConfig()" class="config">
       <img width="32" height="32" :src="configIcon" alt="config button">
     </div>
+
   </nav>
 </template>
 
@@ -36,9 +37,15 @@ export default {
   },
   data() {
     return {
-      configIcon: configSvg
+      configIcon: configSvg,
+      configBoo: false
     };
   },
+  methods: {
+    showConfig() {
+      this.$emit('displayConfig')
+    }
+  }
 };
 </script>
 

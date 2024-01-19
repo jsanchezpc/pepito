@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <TopNav v-if="!isMobile" :userData="userData" />
-    <TopNavPortrait v-else :userData="userData" />
+    <TopNav v-if="!isMobile" :user="user" @displayConfig="showConfig()"  />
+    <TopNavPortrait v-else :user="user" @displayConfig="showConfig()" />
     <router-view />
   </div>
 </template>
@@ -19,11 +19,13 @@ export default {
   },
   data() {
     return {
-      userData: useUserStore().get_user, 
-      isMobile: false
+      user: '',
+      isMobile: false,
+      configBoo: false
     };
   },
   mounted() {
+    this.loadUser();
     this.checkWindowSize();
     window.addEventListener('resize', this.checkWindowSize);
   },
@@ -31,8 +33,15 @@ export default {
     window.removeEventListener('resize', this.checkWindowSize);
   },
   methods: {
+    loadUser() {
+      return this.user = useUserStore().get_user
+    },
     checkWindowSize() {
       this.isMobile = window.innerWidth < 785;
+    },
+    showConfig() {
+      console.log('ajsdjasdjasjdjasd')
+      this.configBoo = !this.configBoo
     }
   }
 };
@@ -42,6 +51,8 @@ export default {
 @import "@/scss/_variables.scss";
 
 html {
+  max-width: 100dvw;
+  overflow: hidden;
   body {
     margin: 0;
     font-family: "Nunito Sans", sans-serif;

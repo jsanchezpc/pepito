@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        user:  {username: 'Jorge', email: "admin@admin.es"},
+        user:  localStorage.getItem('user') ? {username: 'Jorge', email: "admin@admin.es"} : null,
         token: "hola" 
     }),
     getters: {
