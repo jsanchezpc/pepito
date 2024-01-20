@@ -33,6 +33,7 @@ import spainSvg from '@/assets/spain.svg'
 import franceSvg from '@/assets/france.svg'
 import portugalSvg from '@/assets/portugal.svg'
 import germanySvg from '@/assets/germany.svg'
+import usaSvg from '@/assets/usa.svg'
 import axios from 'axios'
 import { useUserStore } from '@/store/user-store'
 
@@ -42,9 +43,10 @@ export default {
     return {
       closeIcon: closeSvg,
       flags: [
-        { flagIcon: germanySvg, language: 'Alemán', code: 'de-DE' },
-        { flagIcon: portugalSvg, language: 'Portugués', code: 'pt-PT' },
-        { flagIcon: franceSvg, language: 'Francés', code: 'fr-FR' },
+        { flagIcon: usaSvg, language: 'English', code: 'en-EN' },
+        { flagIcon: germanySvg, language: 'Deutsch', code: 'de-DE' },
+        { flagIcon: portugalSvg, language: 'Português', code: 'pt-PT' },
+        { flagIcon: franceSvg, language: 'Français', code: 'fr-FR' },
         { flagIcon: spainSvg, language: 'Español', code: 'es-ES' }
       ]
     };
@@ -115,7 +117,18 @@ div.config-box {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-        flex-wrap: wrap;
+        overflow-x: scroll;
+        width: 390px;
+        margin: 0 auto;
+        scroll-behavior: smooth;
+        &::-webkit-scrollbar {
+          background-color: $dark;
+          border-radius: 32px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: $primary;
+          border-radius: 32px;
+        }
 
         div.language {
           display: grid;
