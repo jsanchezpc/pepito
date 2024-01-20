@@ -1,29 +1,33 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-// import { createI18n } from 'vue-i18n'
+import { createI18n } from 'vue-i18n'
 import router from '@/router/index'
 
 // create the store
 const pinia = createPinia()
 
 // import languages files
-// import enUS from '@/i18n/en-US.js'
-// import esES from '@/i18n/es-ES.js'
-// import caES from '@/i18n/ca-ES.js'
+import enUS from '@/i18n/enUS.js'
+import esES from '@/i18n/esES.js'
+import ptPT from '@/i18n/ptPT.js'
+import deDE from '@/i18n/deDE.js'
+import frFR from '@/i18n/frFR.js'
 
 import App from './App.vue'
 
-// const i18n = createI18n({
-//     locale: localStorage.getItem('userLanguage') ? localStorage.getItem('userLanguage') : Intl.DateTimeFormat().resolvedOptions().locale || 'en-US',
-//     messages: {
-//         en: enUS,
-//         es: esES,
-//         // ca: caES
-//     }
-// })
+const i18n = createI18n({
+    locale: 'es-ES',
+    messages: {
+        en: enUS,
+        es: esES,
+        pt: ptPT,
+        de: deDE,
+        fr: frFR
+    }
+})
 
 createApp(App)
     .use(pinia)
-    // .use(i18n)
+    .use(i18n)
     .use(router)
     .mount('#app')

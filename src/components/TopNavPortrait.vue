@@ -13,7 +13,7 @@
             <img width="32" height="32" :src="pollIcon" alt="poll button" />
           </div>
           <div class="nav-link">
-            <router-link @click="toggleMenu()" to="/">Encuestas</router-link>
+            <router-link @click="toggleMenu()" to="/">{{ $t('components.topnav_portrait.poll') }}</router-link>
           </div>
         </div>
         <div class="nav-el">
@@ -21,7 +21,7 @@
             <img width="32" height="32" :src="answersIcon" alt="config button" />
           </div>
           <div class="nav-link">
-            <router-link @click="toggleMenu()" to="/answers">Respuestas</router-link>
+            <router-link @click="toggleMenu()" to="/answers">{{ $t('components.topnav_portrait.answers') }}</router-link>
           </div>
         </div>
         <div class="nav-el config">
@@ -29,12 +29,12 @@
             <img width="32" @click="toggleMenu()" height="32" :src="configIcon" alt="config button" />
           </div>
           <div class="nav-link">
-            <p @click="showConfig()">Configuración</p>
+            <p @click="showConfig()">{{ $t('components.topnav_portrait.settings') }}</p>
           </div>
         </div>
         <div v-if="!user || user.length <= 1">
           <router-link @click="toggleMenu()" to="/login">
-            <div class="full-btn">Entrar</div>
+            <div class="full-btn">{{ $t('components.topnav_portrait.login_button') }}</div>
           </router-link>
         </div>
         <div v-else>

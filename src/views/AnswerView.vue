@@ -3,7 +3,7 @@
     <div v-if="pollList" class="answers-list">blabla bla</div>
     <div class="no-poll">
       <img :src="draw" alt="poll draw" />
-      <h1>¡Empieza creando una encuesta!</h1>
+      <h1>{{ $t("views.answers.no_poll_message") }}</h1>
       <PollBtn />
     </div>
   </div>

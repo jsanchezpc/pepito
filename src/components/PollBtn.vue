@@ -1,5 +1,7 @@
 <template>
-  <div @click="startPoll()" class="full-btn"><span>Encuestar</span></div>
+  <div @click="startPoll()" class="full-btn">
+    <span>{{ $t("components.poll_btn") }}</span>
+  </div>
 </template>
 
 <script>

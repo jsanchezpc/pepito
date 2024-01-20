@@ -4,17 +4,17 @@
       <h1>Relleno</h1>
     </div>
     <div>
-      <router-link to="/">Encuestas</router-link>
+      <router-link to="/">{{ $t('components.topnav.poll') }}</router-link>
     </div>
     <div>
-      <router-link to="/answers">Respuestas</router-link>
+      <router-link to="/answers">{{ $t('components.topnav.answers') }}</router-link>
     </div>
     <div v-if="user">
       <PollBtn />
     </div>
     <div v-else>
       <router-link to="/login">
-        <div class="full-btn">Entrar</div>
+        <div class="full-btn">{{ $t('components.topnav.login_button') }}</div>
       </router-link>
     </div>
     <div @click="showConfig()" class="config">

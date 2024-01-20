@@ -3,75 +3,46 @@
     <div class="form-box">
       <div v-if="form_state" class="login-box">
         <form>
-          <h1>Entrar</h1>
+          <h1>{{ $t('views.login_view.login.title') }}</h1>
           <div class="login-form-box">
-            <label for="email-login">Email</label>
-            <input
-              v-model="logEmail"
-              autocomplete="email"
-              placeholder="Correo"
-              required
-              type="email"
-              id="email-login"
-            />
+            <label for="email-login">{{ $t('views.login_view.login.email') }}</label>
+            <input v-model="logEmail" autocomplete="email" :placeholder="$t('views.login_view.login.email_placeholder')"
+              required type="email" id="email-login" />
 
-            <label for="password-login">Contraseña</label>
-            <input
-              v-model="logPass"
-              autocomplete="current-password"
-              placeholder="Contraseña"
-              required
-              type="password"
-              id="password-login"
-            />
+            <label for="password-login">{{ $t('views.login_view.login.password') }}</label>
+            <input v-model="logPass" autocomplete="current-password"
+              :placeholder="$t('views.login_view.login.password_placeholder')" required type="password"
+              id="password-login" />
 
-            <div @click="logIn()" class="full-btn">Entrar</div>
+            <div @click="logIn()" class="full-btn">{{ $t('views.login_view.login.submit') }}</div>
             <hr />
-            <p><em>¿Aun no tienes cuenta?</em></p>
-            <div @click="switchForm()" class="outline-btn">Crear cuenta</div>
+            <p><em>{{ $t('views.login_view.login.no_account') }}</em></p>
+            <div @click="switchForm()" class="outline-btn">{{ $t('views.login_view.login.create_account') }}</div>
           </div>
         </form>
       </div>
       <div v-else class="signup-box">
         <form>
-          <h1>Crear cuenta</h1>
+          <h1>{{ $t('views.login_view.signup.title') }}</h1>
           <div class="signup-form-box">
-            <label for="name-signup">Usuario</label>
-            <input
-              v-model="signName"
-              autocomplete="username"
-              placeholder="Nombre de usuario"
-              required
-              type="text"
-              id="name-signup"
-            />
+            <label for="name-signup">{{ $t('views.login_view.signup.user') }}</label>
+            <input v-model="signName" autocomplete="username" :placeholder="$t('views.login_view.signup.user_placeholder')" required type="text"
+              id="name-signup" />
 
-            <label for="email-signup">Email</label>
-            <input
-              v-model="signEmail"
-              autocomplete="email"
-              placeholder="Correo"
-              required
-              type="email"
-              id="email-signup"
-            />
+            <label for="email-signup">{{ $t('views.login_view.signup.email') }}</label>
+            <input v-model="signEmail" autocomplete="email" :placeholder="$t('views.login_view.signup.email_placeholder')" required type="email"
+              id="email-signup" />
 
-            <label for="password-signup">Contraseña</label>
-            <input
-              v-model="signPass"
-              autocomplete="new-password"
-              placeholder="Contraseña"
-              required
-              type="password"
-              id="password-signup"
-            />
+            <label for="password-signup">{{ $t('views.login_view.signup.password') }}</label>
+            <input v-model="signPass" autocomplete="new-password" :placeholder="$t('views.login_view.signup.password_placeholder')" required type="password"
+              id="password-signup" />
 
-            <p class="conditions">Acepto los términos y condiciones.</p>
+            <p class="conditions">{{ $t('views.login_view.signup.terms_conditions') }}</p>
 
-            <div @click="signup()" class="full-btn">Crear cuenta</div>
+            <div @click="signup()" class="full-btn">{{ $t('views.login_view.signup.submit') }}</div>
             <hr />
-            <p><em>¿Ya tienes cuenta?</em></p>
-            <div @click="switchForm()" class="outline-btn">Entrar</div>
+            <p><em>{{ $t('views.login_view.signup.already_account') }}</em></p>
+            <div @click="switchForm()" class="outline-btn">{{ $t('views.login_view.signup.enter') }}</div>
           </div>
         </form>
       </div>
@@ -79,7 +50,7 @@
     <div class="side-figure">
       <h1>Relleno</h1>
       <img :src="loginIcon" alt="Welcome" />
-      <h2>¡Únete hoy y haz que tu opinión cuente!</h2>
+      <h2>{{ $t('views.login_view.message') }}</h2>
     </div>
   </div>
 </template>
@@ -102,7 +73,7 @@ export default {
     };
   },
   mounted() {
-    if(localStorage.getItem('user')) {
+    if (localStorage.getItem('user')) {
       this.$router.push('/')
     }
   },
@@ -111,12 +82,12 @@ export default {
       this.form_state = !this.form_state;
     },
     signup() {
-        axios
+      axios
         .post(`${process.env.VUE_APP_API_URL}/signup`, {
-            username: this.signName,
-            email: this.signEmail,
-            password: this.signPass,
-            language: Intl.DateTimeFormat().resolvedOptions().locale // temporal
+          username: this.signName,
+          email: this.signEmail,
+          password: this.signPass,
+          language: Intl.DateTimeFormat().resolvedOptions().locale // temporal
         })
         .then((response) => {
           if (response.data.ok === true) {
@@ -134,10 +105,10 @@ export default {
         });
     },
     logIn() {
-        axios
+      axios
         .post(`${process.env.VUE_APP_API_URL}/login`, {
-            email: this.logEmail,
-            password: this.logPass,
+          email: this.logEmail,
+          password: this.logPass,
         })
         .then((response) => {
           if (response.data.ok === true) {

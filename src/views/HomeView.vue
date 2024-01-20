@@ -1,16 +1,16 @@
 <template>
   <div class="home">
     <div v-if="pollList != null && pollList.length >= 1" class="poll-list">
-      <h1>Encuestas</h1>
+      <h1>{{ $t("views.home.title") }}</h1>
     </div>
     <div v-else class="no-poll">
-      <h2 v-if="user"><span style="font-weight: 300;">Hola,</span> {{ user.username }}</h2>
+      <h2 v-if="user"><span style="font-weight: 300;">{{ $t("views.home.greetings_message") }},</span> {{ user.username }}</h2>
       <img :src="draw" alt="poll draw" />
-      <h1>¡Empieza creando una encuesta!</h1>
+      <h1>{{ $t("views.home.no_poll_message") }}</h1>
       <PollBtn />
     </div>
     <div v-if="!user">
-      Por favor, entra en tu cuenta. Gracias por contar con nosotros.
+      {{ $t("views.home.account_not_found") }}
     </div>
   </div>
 </template>

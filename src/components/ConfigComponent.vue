@@ -3,9 +3,9 @@
     <div @click="showConfig()" class="background-overlay">
     </div>
     <div class="configuration">
-      <h1>Ajustes</h1>
+      <h1>{{ $t('settings.nav_settings.title') }}</h1>
       <div class="settings">
-        <h3>Idioma</h3>
+        <h3>{{ $t('settings.nav_settings.setting_title') }}</h3>
         <div class="language-settings">
           <div v-for="flag in flags" :key="flag.language" @click="setLanguage(flag.code)" class="language">
             <figure>
@@ -16,10 +16,10 @@
         </div>
         <div class="finish">
           <div @click="showConfig()" class="cancel finish-btn">
-            Cancelar
+            {{ $t('settings.nav_settings.cancel_action') }}
           </div>
           <div class="apply finish-btn">
-            Aceptar
+            {{ $t('settings.nav_settings.accept_action') }}
           </div>
         </div>
       </div>
