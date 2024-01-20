@@ -101,6 +101,11 @@ export default {
       signPass: "",
     };
   },
+  mounted() {
+    if(localStorage.getItem('user')) {
+      this.$router.push('/')
+    }
+  },
   methods: {
     switchForm() {
       this.form_state = !this.form_state;
@@ -157,7 +162,7 @@ export default {
 div.login-view {
   width: 100dvw;
   margin: 0 auto;
-  height: calc(100dvh - 7dvh);
+  height: 100dvh;
   display: flex;
   flex-direction: row;
   flex-flow: row-reverse;
@@ -302,15 +307,16 @@ div.login-view {
   div.login-view {
     width: 100dvw;
     margin: 0 auto;
-    height: calc(100dvh - 7dvh);
     display: flex;
     flex-direction: column;
     flex-flow: column;
+    height: auto;
 
     div.side-figure {
       flex: 0.9;
       display: grid;
       place-content: center;
+      position: relative;
 
       h1 {
         font-weight: 900;

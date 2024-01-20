@@ -3,9 +3,6 @@ import { createPinia } from 'pinia'
 // import { createI18n } from 'vue-i18n'
 import router from '@/router/index'
 
-// plugins
-// import PollBtn from '@/components/PollBtn.vue'
-
 // create the store
 const pinia = createPinia()
 
@@ -24,8 +21,6 @@ import App from './App.vue'
 //         // ca: caES
 //     }
 // })
-
-// App.component('PollBtn', PollBtn)
 
 createApp(App)
     .use(pinia)

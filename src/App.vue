@@ -2,7 +2,7 @@
   <div id="app">
     <TopNav v-if="!isMobile && isUserLoaded" :user="user" @displayConfig="showConfig()" />
     <TopNavPortrait v-else-if="isUserLoaded" :user="user" @displayConfig="showConfig()" />
-    <ConfigComponent v-if="configBoo" />
+    <ConfigComponent v-if="configBoo" @displayConfig="showConfig()" />
     <router-view v-if="isUserLoaded || toLog" :user="user" />
   </div>
 </template>
@@ -70,26 +70,51 @@ export default {
 @import "@/scss/_variables.scss";
 
 html {
-  max-width: 100dvw;
+  height: 100dvh;
 
   body {
     margin: 0;
     font-family: "Nunito Sans", sans-serif;
+    height: 100dvh;
 
     div#app {
       background-color: $dark;
-      max-height: 100dvh;
-      max-width: 100dvw;
       height: 100dvh;
       width: 100dvw;
       color: $primary;
-      position: fixed;
+      max-height: max-content;
+      // position: fixed;
       // scroll-behavior: smooth;
     }
   }
 
   tldx-lmi-shadow-root {
     display: none;
+  }
+}
+
+@media screen and (max-height: 785px) {
+  html {
+    height: 100dvh;
+
+    body {
+      margin: 0;
+      font-family: "Nunito Sans", sans-serif;
+      height: 100dvh;
+
+      div#app {
+        background-color: $dark;
+        height: auto;
+        width: 100dvw;
+        color: $primary;
+        // position: fixed;
+        // scroll-behavior: smooth;
+      }
+    }
+
+    tldx-lmi-shadow-root {
+      display: none;
+    }
   }
 }
 </style>
