@@ -14,9 +14,8 @@ import deDE from '@/i18n/deDE.js'
 import frFR from '@/i18n/frFR.js'
 
 import App from './App.vue'
-
 const i18n = createI18n({
-    locale: 'es-ES',
+    locale: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).language : 'en-US' ,
     messages: {
         en: enUS,
         es: esES,

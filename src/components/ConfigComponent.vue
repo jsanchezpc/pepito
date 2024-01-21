@@ -5,7 +5,7 @@
     <div class="configuration">
       <h1>{{ $t('settings.nav_settings.title') }}</h1>
       <div class="settings">
-        <h3>{{ $t('settings.nav_settings.setting_title') }}</h3>
+        <h3>{{ $t('settings.nav_settings.lang_conf_title') }}</h3>
         <div class="language-settings">
           <div v-for="flag in flags" :key="flag.language" @click="setLanguage(flag.code)" class="language">
             <figure>
@@ -13,6 +13,10 @@
               <figcaption>{{ flag.language }}</figcaption>
             </figure>
           </div>
+        </div>
+        <div @click="logOut()" class="logout-settings">
+          <p>{{ $t('settings.nav_settings.logout_button') }}</p>
+          <img :src="logoutIcon" alt="logout">
         </div>
         <div class="finish">
           <div @click="showConfig()" class="cancel finish-btn">
@@ -28,7 +32,7 @@
 </template>
 
 <script>
-import closeSvg from '@/assets/close.svg'
+import logoutSvg from '@/assets/logout.svg'
 import spainSvg from '@/assets/spain.svg'
 import franceSvg from '@/assets/france.svg'
 import portugalSvg from '@/assets/portugal.svg'
@@ -41,13 +45,14 @@ export default {
   name: "ConfigComponent",
   data() {
     return {
-      closeIcon: closeSvg,
+      logoutIcon: logoutSvg,
       flags: [
+        { flagIcon: spainSvg, language: 'Español', code: 'es-ES' },
         { flagIcon: usaSvg, language: 'English', code: 'en-EN' },
         { flagIcon: germanySvg, language: 'Deutsch', code: 'de-DE' },
         { flagIcon: portugalSvg, language: 'Português', code: 'pt-PT' },
-        { flagIcon: franceSvg, language: 'Français', code: 'fr-FR' },
-        { flagIcon: spainSvg, language: 'Español', code: 'es-ES' }
+        { flagIcon: franceSvg, language: 'Français', code: 'fr-FR' }
+
       ]
     };
   },
@@ -57,14 +62,23 @@ export default {
     },
     setLanguage(langCode) {
       const userId = useUserStore().get_user._id
-
       axios.post(`${process.env.VUE_APP_API_URL}/updateLanguage`, { id: userId, newLanguageCode: langCode })
         .then(response => {
-          console.log(response.data);
+          if (response.data.ok === true) {
+            useUserStore().update_user(response.data.user)
+            localStorage.setItem('user', JSON.stringify(response.data.user))
+            this.$router.go()
+          }
         })
         .catch(error => {
           console.error(error);
         });
+    },
+    logOut() {
+      this.$emit('displayConfig')
+      useUserStore().remove_user()
+      useUserStore().remove_token()
+      this.$router.push('/login')
     }
   }
 };
@@ -85,7 +99,7 @@ div.config-box {
   }
 
   div.configuration {
-    padding: 32px;
+    padding: 16px;
     background-color: white;
     border-radius: 32px;
     position: absolute;
@@ -107,6 +121,7 @@ div.config-box {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      overflow: hidden;
 
       h3 {
         color: black;
@@ -116,23 +131,29 @@ div.config-box {
       div.language-settings {
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
-        overflow-x: scroll;
-        width: 390px;
+        justify-content: space-around;
+        overflow-x: auto;
+        flex-wrap: wrap;
+        width: 100%;
         margin: 0 auto;
-        scroll-behavior: smooth;
+
         &::-webkit-scrollbar {
           background-color: $dark;
           border-radius: 32px;
         }
+
         &::-webkit-scrollbar-thumb {
           background-color: $primary;
           border-radius: 32px;
         }
 
         div.language {
-          display: grid;
-          place-content: center;
+          width: 32px;
+          margin: 32px;
+
+          &:first-child {
+            margin-left: 8px;
+          }
 
           &:hover {
             cursor: pointer;
@@ -145,17 +166,49 @@ div.config-box {
           }
 
           figure {
+            display: grid;
+            place-content: center;
+
             img {
               width: 32px;
               display: block;
-              margin: 0 auto;
               image-rendering: pixelated;
+              margin: 0 auto;
             }
 
             figcaption {
               color: black;
             }
           }
+        }
+      }
+
+      div.logout-settings {
+        margin-top: 8px;
+        display: flex;
+        place-content: center;
+        font-weight: 800;
+        background-color: $dark;
+        width: 200px;
+        margin: 0 auto;
+        padding: 8px;
+        border-radius: 8px;
+        border: 3px solid $primary;
+        height: 32px;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        p {
+          display: inline;
+          color: white;
+          margin-right: 8px;
+          line-height: 0;
+        }
+
+        img {
+          width: 32px;
         }
       }
 
@@ -170,12 +223,17 @@ div.config-box {
           width: 100px;
           padding: 8px;
           text-align: center;
-          border-radius: 32px;
+          border-radius: calc(32px + 16px);
           cursor: pointer;
 
           &.cancel {
             background-color: white;
             color: $primary;
+
+            &:hover {
+              color: $dark;
+              font-style: italic;
+            }
           }
 
           &.apply {
@@ -192,4 +250,144 @@ div.config-box {
     }
   }
 }
-</style>
+
+@media screen and (max-width:685px) {
+  div.config-box {
+    position: relative;
+    top: -7dvh;
+
+    div.background-overlay {
+      background-color: rgba(0, 0, 0, 0.420);
+      height: 100dvh;
+      width: 100dvw;
+      position: absolute;
+      z-index: 80;
+      overflow: hidden;
+    }
+
+    div.configuration {
+      padding: 16px;
+      background-color: white;
+      border-radius: 32px;
+      position: absolute;
+      height: auto;
+      top: 128px;
+      left: 10%;
+      right: 10%;
+      z-index: 81;
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        color: $primary;
+        font-weight: 300;
+        margin-bottom: 0;
+      }
+
+      div.settings {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+
+        h3 {
+          color: black;
+          margin-bottom: 0;
+        }
+
+        div.language-settings {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          flex-wrap: nowrap;
+          overflow-x: scroll;
+          width: 100%;
+          margin-bottom: 8px;
+
+          &::-webkit-scrollbar {
+            background-color: $dark;
+            border-radius: 32px;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background-color: $primary;
+            border-radius: 32px;
+          }
+
+          div.language {
+            &:first-child {
+              margin-left: 128px;
+            }
+
+            @media screen and (max-width:670px) {
+              &:first-child {
+                margin-left: 350px;
+              }
+            }
+
+            &:hover {
+              cursor: pointer;
+
+              figcaption {
+                color: $primary
+              }
+
+              ;
+            }
+
+            figure {
+              display: grid;
+              place-content: center;
+
+              img {
+                width: 32px;
+                display: block;
+                margin: 0 auto;
+                image-rendering: pixelated;
+              }
+
+              figcaption {
+                color: black;
+              }
+            }
+          }
+        }
+
+        div.finish {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          margin-top: 16px;
+
+          div.finish-btn {
+            flex: 0.5;
+            width: 100px;
+            padding: 8px;
+            text-align: center;
+            border-radius: calc(32px + 16px);
+            cursor: pointer;
+
+            &.cancel {
+              background-color: white;
+              color: $primary;
+
+              &:hover {
+                color: $dark;
+              }
+            }
+
+            &.apply {
+              background-color: $primary;
+              color: white;
+              transition: background-color 0.4s;
+
+              &:hover {
+                background-color: $primary-s1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</style>

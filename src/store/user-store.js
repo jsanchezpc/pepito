@@ -31,6 +31,7 @@ export const useUserStore = defineStore('user', {
         },
         remove_user() {
             this.user = null
+            localStorage.clear()
         },
         update_token(new_token) {
             this.token = new_token

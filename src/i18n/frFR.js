@@ -2,9 +2,10 @@ export default {
     settings: {
         nav_settings: {
             title: "Paramètres",
-            setting_title: "Langue",
+            lang_conf_title: "Langue",
             cancel_action: "Annuler",
-            accept_action: "Accepter"
+            accept_action: "Accepter",
+            logout_button: "Déconnexion"
         }
     },
     views: {
