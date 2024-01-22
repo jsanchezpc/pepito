@@ -38,7 +38,7 @@
           </router-link>
         </div>
         <div v-else>
-          <PollBtn />
+          <PollBtn @click="toggleMenu()" />
         </div>
       </div>
     </div>

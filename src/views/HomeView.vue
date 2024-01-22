@@ -19,7 +19,6 @@
 <script>
 import PollBtn from "@/components/PollBtn.vue";
 import drawSvg from "@/assets/quest.svg";
-// import { useUserStore } from "@/store/user-store";
 export default {
   name: "HomeView",
   props: {
@@ -35,7 +34,7 @@ export default {
     };
   },
   beforeMount() {
-    if (this.$props.user < 1) {
+    if (!this.$props.user) {
       this.$router.go('/')
     }
   }

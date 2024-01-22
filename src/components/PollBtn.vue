@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { useUserStore } from '@/store/user-store';
+
 export default {
   name: "PollBtn",
   data() {
@@ -15,6 +17,9 @@ export default {
   methods: {
     startPoll() {
       console.log('Starting a poll...')
+      if(useUserStore().get_user) {
+        this.$router.push('/new-poll')
+      }
     }
   }
 

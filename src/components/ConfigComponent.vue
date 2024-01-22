@@ -1,29 +1,33 @@
 <template>
   <div class="config-box">
-    <div @click="showConfig()" class="background-overlay">
-    </div>
+    <div @click="showConfig()" class="background-overlay"></div>
     <div class="configuration">
-      <h1>{{ $t('settings.nav_settings.title') }}</h1>
+      <h1>{{ $t("settings.nav_settings.title") }}</h1>
       <div class="settings">
-        <h3>{{ $t('settings.nav_settings.lang_conf_title') }}</h3>
+        <h3>{{ $t("settings.nav_settings.lang_conf_title") }}</h3>
         <div class="language-settings">
-          <div v-for="flag in flags" :key="flag.language" @click="setLanguage(flag.code)" class="language">
+          <div
+            v-for="flag in flags"
+            :key="flag.language"
+            @click="setLanguage(flag.code)"
+            class="language"
+          >
             <figure>
-              <img :src="flag.flagIcon" alt="flag image">
+              <img :src="flag.flagIcon" alt="flag image" />
               <figcaption>{{ flag.language }}</figcaption>
             </figure>
           </div>
         </div>
         <div @click="logOut()" class="logout-settings">
-          <p>{{ $t('settings.nav_settings.logout_button') }}</p>
-          <img :src="logoutIcon" alt="logout">
+          <p>{{ $t("settings.nav_settings.logout_button") }}</p>
+          <img :src="logoutIcon" alt="logout" />
         </div>
         <div class="finish">
           <div @click="showConfig()" class="cancel finish-btn">
-            {{ $t('settings.nav_settings.cancel_action') }}
+            {{ $t("settings.nav_settings.cancel_action") }}
           </div>
           <div class="apply finish-btn">
-            {{ $t('settings.nav_settings.accept_action') }}
+            {{ $t("settings.nav_settings.accept_action") }}
           </div>
         </div>
       </div>
@@ -32,14 +36,15 @@
 </template>
 
 <script>
-import logoutSvg from '@/assets/logout.svg'
-import spainSvg from '@/assets/spain.svg'
-import franceSvg from '@/assets/france.svg'
-import portugalSvg from '@/assets/portugal.svg'
-import germanySvg from '@/assets/germany.svg'
-import usaSvg from '@/assets/usa.svg'
-import axios from 'axios'
-import { useUserStore } from '@/store/user-store'
+import logoutSvg from "@/assets/logout.svg";
+import spainSvg from "@/assets/spain.svg";
+import cataloniaSvg from "@/assets/cat.svg";
+import franceSvg from "@/assets/france.svg";
+import portugalSvg from "@/assets/portugal.svg";
+import germanySvg from "@/assets/germany.svg";
+import usaSvg from "@/assets/usa.svg";
+import axios from "axios";
+import { useUserStore } from "@/store/user-store";
 
 export default {
   name: "ConfigComponent",
@@ -47,40 +52,44 @@ export default {
     return {
       logoutIcon: logoutSvg,
       flags: [
-        { flagIcon: spainSvg, language: 'Español', code: 'es-ES' },
-        { flagIcon: usaSvg, language: 'English', code: 'en-EN' },
-        { flagIcon: germanySvg, language: 'Deutsch', code: 'de-DE' },
-        { flagIcon: portugalSvg, language: 'Português', code: 'pt-PT' },
-        { flagIcon: franceSvg, language: 'Français', code: 'fr-FR' }
-
-      ]
+        { flagIcon: cataloniaSvg, language: "Català", code: "ca-ES" },
+        { flagIcon: spainSvg, language: "Español", code: "es-ES" },
+        { flagIcon: usaSvg, language: "English", code: "en-EN" },
+        { flagIcon: germanySvg, language: "Deutsch", code: "de-DE" },
+        { flagIcon: portugalSvg, language: "Português", code: "pt-PT" },
+        { flagIcon: franceSvg, language: "Français", code: "fr-FR" },
+      ],
     };
   },
   methods: {
     showConfig() {
-      this.$emit('displayConfig')
+      this.$emit("displayConfig");
     },
     setLanguage(langCode) {
-      const userId = useUserStore().get_user._id
-      axios.post(`${process.env.VUE_APP_API_URL}/updateLanguage`, { id: userId, newLanguageCode: langCode })
-        .then(response => {
+      const userId = useUserStore().get_user._id;
+      axios
+        .post(`${process.env.VUE_APP_API_URL}/updateLanguage`, {
+          id: userId,
+          newLanguageCode: langCode,
+        })
+        .then((response) => {
           if (response.data.ok === true) {
-            useUserStore().update_user(response.data.user)
-            localStorage.setItem('user', JSON.stringify(response.data.user))
-            this.$router.go()
+            useUserStore().update_user(response.data.user);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            this.$router.go();
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     },
     logOut() {
-      this.$emit('displayConfig')
-      useUserStore().remove_user()
-      useUserStore().remove_token()
-      this.$router.push('/login')
-    }
-  }
+      this.$emit("displayConfig");
+      useUserStore().remove_user();
+      useUserStore().remove_token();
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 
@@ -90,7 +99,7 @@ div.config-box {
   top: -7dvh;
 
   div.background-overlay {
-    background-color: rgba(0, 0, 0, 0.420);
+    background-color: rgba(0, 0, 0, 0.42);
     height: 100dvh;
     width: 100dvw;
     position: absolute;
@@ -152,17 +161,15 @@ div.config-box {
           margin: 32px;
 
           &:first-child {
-            margin-left: 8px;
+            margin-left: 64px;
           }
 
           &:hover {
             cursor: pointer;
 
             figcaption {
-              color: $primary
+              color: $primary;
             }
-
-            ;
           }
 
           figure {
@@ -171,6 +178,7 @@ div.config-box {
 
             img {
               width: 32px;
+              height: 32px;
               display: block;
               image-rendering: pixelated;
               margin: 0 auto;
@@ -251,13 +259,13 @@ div.config-box {
   }
 }
 
-@media screen and (max-width:685px) {
+@media screen and (max-width: 685px) {
   div.config-box {
     position: relative;
     top: -7dvh;
 
     div.background-overlay {
-      background-color: rgba(0, 0, 0, 0.420);
+      background-color: rgba(0, 0, 0, 0.42);
       height: 100dvh;
       width: 100dvw;
       position: absolute;
@@ -316,12 +324,12 @@ div.config-box {
 
           div.language {
             &:first-child {
-              margin-left: 128px;
+              margin-left: 64px;
             }
 
-            @media screen and (max-width:670px) {
+            @media screen and (max-width: 670px) {
               &:first-child {
-                margin-left: 350px;
+                margin-left: 128px;
               }
             }
 
@@ -329,10 +337,8 @@ div.config-box {
               cursor: pointer;
 
               figcaption {
-                color: $primary
+                color: $primary;
               }
-
-              ;
             }
 
             figure {
@@ -390,4 +396,5 @@ div.config-box {
       }
     }
   }
-}</style>
+}
+</style>
