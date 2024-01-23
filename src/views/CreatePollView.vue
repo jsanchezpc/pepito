@@ -1,34 +1,40 @@
 <template>
   <div class="create-poll">
-    <form>
-      <div class="meta">
-        <label for="poll-title">
-          Title:
-          <input
-            v-model="pollTitle"
-            type="text"
-            id="poll-title"
-            :placeholder="pollTitle"
-          />
-        </label>
-        <label for="poll-descr">
-          Description:
-          <input
-            type="text"
-            class="poll-description"
-            :placeholder="pollDescr"
-            id="poll-descr"
-          />
-        </label>
-        <div class="questions">
 
-        </div>
+
+
+    <!-- HAZ UN NPM INSTALL,PERO EN LA API MELOON -->
+    <div class="meta">
+      <label for="poll-title">
+        Title:
+        <textarea
+          v-model="pollTitle"
+          type="text"
+          id="poll-title"
+          :placeholder="pollTitle"
+        ></textarea>
+      </label>
+      <label for="poll-descr">
+        Description:
+        <textarea
+          type="text"
+          class="poll-description"
+          :placeholder="pollDescr"
+          id="poll-descr"
+        ></textarea>
+      </label>
+      <div class="generate-btn">
+        <img :src="generateIcon" alt="generate button" />
       </div>
-    </form>
+    </div>
+    <div v-if="generatedQuestions" class="generated-questions"></div>
+    <div class="generated-questions"></div>
   </div>
 </template>
 
 <script>
+import generateSvg from "@/assets/generate.svg";
+
 export default {
   name: "CreatePollView",
   props: {
@@ -39,10 +45,12 @@ export default {
       pollMaxCount: 10,
       pollTitle: "Titulo de la encuesta",
       pollDescr: "¿Sabías que puedes hacer click en éste título para editarlo?",
+      generateIcon: generateSvg,
+      generatedQuestions: [],
+      questions: []
     };
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
@@ -55,22 +63,25 @@ div.create-poll {
   border-radius: 32px;
   box-shadow: 8px 8px $dark-light;
   margin-top: 16px;
-  form {
-    div.meta {
-        label {
-            margin-top: 8px;
-            margin-bottom: 4px;
-        }
-      input#poll-title {
+  position: relative;
+  div.meta {
+    position: relative;
+    label {
+      display: block;
+      height: fit-content;
+      textarea#poll-title {
+        font-family: "Nunito Sans", sans-serif;
+        resize: none;
         width: 100%;
         display: block;
         border: 2px solid transparent;
         outline: none;
         background-color: transparent;
-        height: 32px;
         color: black;
         font-weight: 900;
         font-size: 2em;
+        padding: 0;
+        margin: 0px 0px 8px 0px;
         &:focus {
           border-bottom: 2px solid $primary;
         }
@@ -82,17 +93,29 @@ div.create-poll {
           font-weight: 900;
           font-size: 1em;
         }
+        &::-webkit-scrollbar {
+          background-color: $dark;
+          border-radius: 32px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: $primary;
+          border-radius: 32px;
+        }
       }
-      input.poll-description {
+      textarea.poll-description {
+        font-family: "Nunito Sans", sans-serif;
+        resize: none;
         width: 100%;
         display: block;
         border: 2px solid transparent;
         outline: none;
         background-color: transparent;
-        height: 32px;
         color: black;
         font-weight: 900;
         font-size: 1em;
+        padding: 0;
+        margin-top: 0;
         &:focus {
           border-bottom: 2px solid $primary;
         }
@@ -102,11 +125,20 @@ div.create-poll {
           font-size: 1em;
         }
       }
-
-      div.questions {
-        margin-top: 32px;
+    }
+    div.generate-btn {
+      position: absolute;
+      width: 100%;
+      display: grid;
+      place-content: center;
+      img {
+        width: 112px;
+        cursor: pointer;
       }
     }
+  }
+  div.questions {
+    margin-top: 32px;
   }
 }
 </style>

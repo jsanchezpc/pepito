@@ -38,7 +38,6 @@
 <script>
 import logoutSvg from "@/assets/logout.svg";
 import spainSvg from "@/assets/spain.svg";
-import cataloniaSvg from "@/assets/cat.svg";
 import franceSvg from "@/assets/france.svg";
 import portugalSvg from "@/assets/portugal.svg";
 import germanySvg from "@/assets/germany.svg";
@@ -52,7 +51,6 @@ export default {
     return {
       logoutIcon: logoutSvg,
       flags: [
-        { flagIcon: cataloniaSvg, language: "Català", code: "ca-ES" },
         { flagIcon: spainSvg, language: "Español", code: "es-ES" },
         { flagIcon: usaSvg, language: "English", code: "en-EN" },
         { flagIcon: germanySvg, language: "Deutsch", code: "de-DE" },
