@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import router from '@/router/index'
+import contenteditable from 'vue-contenteditable'
 
 // create the store
 const pinia = createPinia()
@@ -25,8 +26,10 @@ const i18n = createI18n({
     }
 })
 
+
 createApp(App)
     .use(pinia)
+    .use(contenteditable)
     .use(i18n)
     .use(router)
     .mount('#app')
