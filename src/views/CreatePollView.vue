@@ -1,59 +1,102 @@
 <template>
   <div class="poll-view" :class="{ 'fill-height': questions.length > 0 }">
     <div class="create-poll">
-      <input spellcheck="false" class="poll-title" type="text" v-model="pollTitle"
-        :placeholder="$t('views.create_poll.title')">
-      <br>
-      <textarea spellcheck="false" class="poll-description" v-model="pollDescr"
-        :placeholder="$t('views.create_poll.title')"></textarea>
+      <input
+        spellcheck="false"
+        class="poll-title"
+        type="text"
+        v-model="pollTitle"
+        :placeholder="$t('views.create_poll.title')"
+      />
+      <br />
+      <textarea
+        spellcheck="false"
+        class="poll-description"
+        v-model="pollDescr"
+        :placeholder="$t('views.create_poll.title')"
+      ></textarea>
       <div class="generate-box">
         <div @click="generateQuestions()" class="generate-btn">
-          <img class="generate-img" :src="generateIcon" alt="generate button image">
+          <img
+            class="generate-img"
+            :src="generateIcon"
+            alt="generate button image"
+          />
         </div>
       </div>
+    </div>
+
+    <div v-if="showLoader" class="wait-animation">
+      <LottieAnimation class="wait-lottie" :animation-data="rellenoLottie" :auto-play="true" :loop="true" />
+    </div>
+    <div v-else-if="!showLoader && questions.length <= 0" class="wait-animation">
+      <LottieAnimation class="wait-lottie" :animation-data="waitingLottie" :auto-play="true" :loop="true" />
     </div>
 
     <div class="questions-list" v-if="questions && questions.length > 0">
       <div class="question" v-for="question in questions" :key="question.id">
         <div>
-          <h1 class="question-title" contenteditable="true" spellcheck="false"
-            v-on:key.capture="changeQuestion(question.id)">
+          <h1
+            class="question-title"
+            contenteditable="true"
+            spellcheck="false"
+            v-on:key.capture="changeQuestion(question.id)"
+          >
             {{ question.question }}
           </h1>
           <div class="delete">
-            <img width="32" height="32" :src="deleteIcon" alt="delete answer">
+            <img width="32" height="32" :src="deleteIcon" alt="delete answer" />
           </div>
         </div>
         <div class="question-answers">
           <div class="answer-list">
-            <div class="answer" v-for="answer in question.answers" :key="answer.id" contenteditable="true"
-              spellcheck="false" v-on:key.capture="changeAnswer(answer.id)">
+            <div
+              class="answer"
+              v-for="answer in question.answers"
+              :key="answer.id"
+              contenteditable="true"
+              spellcheck="false"
+              v-on:key.capture="changeAnswer(answer.id)"
+            >
               <div class="answer-option">{{ answer.text }}</div>
               <div class="delete">
-                <img width="32" height="32" :src="deleteIcon" alt="delete answer">
+                <img
+                  width="32"
+                  height="32"
+                  :src="deleteIcon"
+                  alt="delete answer"
+                />
               </div>
             </div>
-            <input class="other" placeholder="Relleno" type="text" v-if="question.other == true">
+            <div class="other" v-if="question.other == true">
+              <input class="other-option" placeholder="Relleno" type="text" />
+              <div class="delete">
+                <img
+                  width="32"
+                  height="32"
+                  :src="deleteIcon"
+                  alt="delete answer"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
     <div v-if="questions && questions.length > 0" class="save-poll">
-      <div @click="$router.push('/')" class="discard">
-        Discard
-      </div>
-      <div class="save">
-        Save
-      </div>
+      <div @click="$router.push('/')" class="discard">Discard</div>
+      <div class="save">Save</div>
     </div>
   </div>
 </template>
 
 <script>
+import waitingJson from "@/assets/waiting_lottie.json";
+import rellenoJson from "@/assets/relleno_lottie.json";
 import generateSvg from "@/assets/generate.svg";
-import deleteSvg from '@/assets/delete.svg'
-import axios from 'axios'
+import deleteSvg from "@/assets/delete.svg";
+import axios from "axios";
+import { LottieAnimation } from "lottie-web-vue";
 
 export default {
   name: "CreatePollView",
@@ -63,46 +106,70 @@ export default {
   data() {
     return {
       pollMaxCount: 10,
-      pollTitle: '',
-      pollDescr: '',
+      pollTitle: "",
+      pollDescr: "",
+      waitingLottie: waitingJson,
+      rellenoLottie: rellenoJson,
       generateIcon: generateSvg,
       deleteIcon: deleteSvg,
+      showLoader: false,
       generatedQuestions: [],
       questions: [],
-      language: JSON.parse(localStorage.getItem('user')).language
+      language: JSON.parse(localStorage.getItem("user")).language,
     };
   },
   methods: {
     generateQuestions() {
-      console.log('wait for the response please...', { poll_title: this.pollTitle, poll_description: this.pollDescr })
-      axios.post(`${process.env.VUE_APP_API_URL}/generatePoll`, { poll_title: this.pollTitle, poll_description: this.pollDescr, pollMaxCount: this.pollMaxCount })
-        .then(res => {
-          console.log(res)
-          this.questions = res.data.generated.questions
+      this.showLoader = true
+      console.log("wait for the response please...", {
+        poll_title: this.pollTitle,
+        poll_description: this.pollDescr,
+      });
+      axios
+        .post(`${process.env.VUE_APP_API_URL}/generatePoll`, {
+          poll_title: this.pollTitle,
+          poll_description: this.pollDescr,
+          pollMaxCount: this.pollMaxCount,
         })
+        .then((res) => {
+          console.log(res);
+          this.questions = res.data.generated.questions;
+        })
+        .then(() => this.showLoader = false)
     },
     changeQuestion(id, newQuestionText) {
-      const questionIndex = this.questions.findIndex(question => question.id === id);
+      const questionIndex = this.questions.findIndex(
+        (question) => question.id === id
+      );
       if (questionIndex !== -1) {
         this.$set(this.questions, questionIndex, {
           ...this.questions[questionIndex],
-          question: newQuestionText
+          question: newQuestionText,
         });
       }
     },
     changeAnswer(questionId, answerId, newAnswerText) {
-      const questionIndex = this.questions.findIndex(question => question.id === questionId);
+      const questionIndex = this.questions.findIndex(
+        (question) => question.id === questionId
+      );
       if (questionIndex !== -1) {
-        const answerIndex = this.questions[questionIndex].answers.findIndex(answer => answer.id === answerId);
+        const answerIndex = this.questions[questionIndex].answers.findIndex(
+          (answer) => answer.id === answerId
+        );
         if (answerIndex !== -1) {
           this.$set(this.questions[questionIndex].answers, answerIndex, {
             ...this.questions[questionIndex].answers[answerIndex],
-            text: newAnswerText
+            text: newAnswerText,
           });
+          console.log(this.questions[questionIndex].answers[answerIndex])
         }
       }
     },
+    deleteAnswer() {
+
+    }
   },
+  components: { LottieAnimation },
 };
 </script>
 
@@ -151,7 +218,7 @@ div.poll-view {
       resize: none;
       outline: none;
       font-family: "Nunito Sans", sans-serif;
-      line-height: 1.950em;
+      line-height: 1.95em;
       font-size: 1em;
       text-align: justify;
       font-weight: 500;
@@ -170,6 +237,15 @@ div.poll-view {
     }
   }
 
+  div.wait-animation {
+    display: grid;
+    place-content: center;
+    width: 100%;
+    .wait-lottie {
+      width: 60%;
+      margin: 0 auto;
+    }
+  }
   div.questions-list {
     width: 100%;
     position: relative;
@@ -202,8 +278,7 @@ div.poll-view {
           place-content: center;
 
           img {
-            width: 32px;
-            height: 32px;
+            width: 24px;
 
             &:hover {
               cursor: pointer;
@@ -221,6 +296,7 @@ div.poll-view {
           div.answer {
             display: flex;
             flex-direction: row;
+            outline: none;
 
             div.answer-option {
               flex: 0.98;
@@ -240,8 +316,7 @@ div.poll-view {
               margin-bottom: 4px;
 
               img {
-                width: 32px;
-                height: 32px;
+                width: 28px;
 
                 &:hover {
                   fill: red;
@@ -249,9 +324,9 @@ div.poll-view {
                 }
               }
             }
-
-
-            input.other {
+          }
+          div.other {
+            input.other-option {
               padding: 8px;
               border: 2px solid $dark-light;
               border-radius: 8px;
@@ -259,6 +334,22 @@ div.poll-view {
               color: $dark;
               font-weight: 800;
               outline: none;
+              width: -webkit-fill-available;
+            }
+            div.delete {
+              flex: -0.8;
+              display: grid;
+              place-content: center;
+              margin-bottom: 4px;
+
+              img {
+                width: 28px;
+
+                &:hover {
+                  fill: red;
+                  cursor: pointer;
+                }
+              }
             }
           }
         }
@@ -309,4 +400,5 @@ div.poll-view {
       }
     }
   }
-}</style>
+}
+</style>
