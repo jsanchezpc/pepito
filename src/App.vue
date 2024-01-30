@@ -81,17 +81,14 @@ export default {
 @import "@/scss/_variables.scss";
 
 html {
-  height: 100dvh;
-
   body {
     margin: 0;
     font-family: "Nunito Sans", sans-serif;
-    height: 100dvh;
 
     div#app {
       background-color: $dark;
-      height: 100dvh;
-      width: 100dvw;
+      height: -webkit-fill-available;
+      width: -webkit-fill-available;
       color: $primary;
       max-height: max-content;
       // position: fixed;
@@ -106,12 +103,9 @@ html {
 
 @media screen and (max-height: 785px) {
   html {
-    height: 100dvh;
-
     body {
       margin: 0;
       font-family: "Nunito Sans", sans-serif;
-      height: 100dvh;
 
       div#app {
         background-color: $dark;

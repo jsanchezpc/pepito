@@ -19,6 +19,12 @@ export default {
         answers: {
             no_poll_message: "¡Empieza creando una encuesta!",
         },
+        create_poll: {
+            title: "Título de la encuesta: ",
+            description: "Describe tu encuesta: ",
+            title_placeholder: "Nueva encuesta",
+            description_placeholder: "¿Sabías que puedes hacer click en éste elemento para editarlo?"
+        },
         login_view: {
             message: "¡Únete hoy y haz que tu opinión cuente!",
             login: {

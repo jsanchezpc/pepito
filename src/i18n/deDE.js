@@ -14,10 +14,15 @@ export default {
             no_poll_message: "Starten Sie, indem Sie eine Umfrage erstellen!",
             account_not_found: "Bitte melden Sie sich bei Ihrem Konto an. Vielen Dank für Ihr Vertrauen.",
             greetings_message: "Hallo",
-
         },
         answers: {
             no_poll_message: "Starten Sie, indem Sie eine Umfrage erstellen!",
+        },
+        create_poll: {
+            title: "Umfragetitel: ",
+            description: "Beschreibe deine Umfrage: ",
+            title_placeholder: "Neue Umfrage",
+            description_placeholder: "Wusstest du, dass du auf dieses Element klicken kannst, um es zu bearbeiten?",
         },
         login_view: {
             message: "Treten Sie heute bei und lassen Sie Ihre Meinung zählen!",
@@ -31,7 +36,6 @@ export default {
                 no_account: "Sie haben noch kein Konto?",
                 already_account: "Sie haben bereits ein Konto?",
                 create_account: "Konto erstellen"
-
             },
             signup: {
                 title: "Konto erstellen",

@@ -19,6 +19,12 @@ export default {
         answers: {
             no_poll_message: "Commencez par créer un sondage !",
         },
+        create_poll: {
+            title: "Titre du sondage : ",
+            description: "Décrivez votre sondage : ",
+            title_placeholder: "Nouveau sondage",
+            description_placeholder: "Saviez-vous que vous pouvez cliquer sur cet élément pour le modifier?",
+        },
         login_view: {
             message: "Rejoignez-nous aujourd'hui et faites entendre votre opinion !",
             login: {

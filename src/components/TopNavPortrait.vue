@@ -83,7 +83,6 @@ export default {
 
 <style scoped lang="scss">
 div.portrait-menu {
-  width: 100dvw;
   height: 7dvh;
   display: flex;
   position: relative;
@@ -114,7 +113,6 @@ div.portrait-menu {
       background-color: black;
       display: flex;
       flex-direction: column;
-      width: 100dvw;
       height: 100dvh;
       margin: 0 auto;
 

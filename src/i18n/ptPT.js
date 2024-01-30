@@ -19,6 +19,12 @@ export default {
         answers: {
             no_poll_message: "Comece criando uma enquete!",
         },
+        create_poll: {
+            title: "Título da enquete: ",
+            description: "Descreva sua enquete: ",
+            title_placeholder: "Nova enquete",
+            description_placeholder: "Sabia que pode clicar neste elemento para editá-lo?",
+        },
         login_view: {
             message: "Junte-se a nós hoje e faça sua opinião contar!",
             login: {
