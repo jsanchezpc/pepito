@@ -20,8 +20,8 @@ export default {
             no_poll_message: "¡Empieza creando una encuesta!",
         },
         create_poll: {
-            title: "Título de la encuesta: ",
-            description: "Describe tu encuesta: ",
+            title: "Título de la encuesta",
+            description: "Describe tu encuesta",
             title_placeholder: "Nueva encuesta",
             description_placeholder: "¿Sabías que puedes hacer click en éste elemento para editarlo?"
         },

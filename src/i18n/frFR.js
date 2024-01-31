@@ -20,8 +20,8 @@ export default {
             no_poll_message: "Commencez par créer un sondage !",
         },
         create_poll: {
-            title: "Titre du sondage : ",
-            description: "Décrivez votre sondage : ",
+            title: "Titre du sondage ",
+            description: "Décrivez votre sondage ",
             title_placeholder: "Nouveau sondage",
             description_placeholder: "Saviez-vous que vous pouvez cliquer sur cet élément pour le modifier?",
         },

@@ -1,15 +1,7 @@
 <template>
   <div id="app">
-    <TopNav
-      v-if="!isMobile && isUserLoaded"
-      :user="user"
-      @displayConfig="showConfig()"
-    />
-    <TopNavPortrait
-      v-else-if="isUserLoaded"
-      :user="user"
-      @displayConfig="showConfig()"
-    />
+    <TopNav v-if="!isMobile && isUserLoaded" :user="user" @displayConfig="showConfig()" />
+    <TopNavPortrait v-else-if="isUserLoaded" :user="user" @displayConfig="showConfig()" />
     <ConfigComponent v-if="configBoo" @displayConfig="showConfig()" />
     <router-view v-if="isUserLoaded || toLog" :user="user" />
   </div>
@@ -91,6 +83,7 @@ html {
       width: -webkit-fill-available;
       color: $primary;
       max-height: max-content;
+
       // position: fixed;
       // scroll-behavior: smooth;
     }
@@ -112,6 +105,7 @@ html {
         height: auto;
         width: 100dvw;
         color: $primary;
+
         // position: fixed;
         // scroll-behavior: smooth;
       }

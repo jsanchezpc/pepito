@@ -20,8 +20,8 @@ export default {
             no_poll_message: "Start by creating a survey!",
         },
         create_poll: {
-            title: "Poll Title: ",
-            description: "Describe your poll: ",
+            title: "Poll Title",
+            description: "Describe your poll",
             title_placeholder: "New poll",
             description_placeholder: "Did you know you can click on this element to edit it?",
 

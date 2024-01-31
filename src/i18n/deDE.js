@@ -19,8 +19,8 @@ export default {
             no_poll_message: "Starten Sie, indem Sie eine Umfrage erstellen!",
         },
         create_poll: {
-            title: "Umfragetitel: ",
-            description: "Beschreibe deine Umfrage: ",
+            title: "Umfragetitel",
+            description: "Beschreibe deine Umfrage",
             title_placeholder: "Neue Umfrage",
             description_placeholder: "Wusstest du, dass du auf dieses Element klicken kannst, um es zu bearbeiten?",
         },
