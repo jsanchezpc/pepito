@@ -1,50 +1,109 @@
 <template>
   <div class="poll-view" :class="{ 'fill-height': questions.length > 0 }">
     <div class="create-poll">
-      <input spellcheck="false" class="poll-title" type="text" v-model="pollTitle"
-        :placeholder="$t('views.create_poll.title')" />
+      <input
+        spellcheck="false"
+        class="poll-title"
+        type="text"
+        v-model="pollTitle"
+        :placeholder="$t('views.create_poll.title')"
+      />
       <br />
-      <textarea spellcheck="false" class="poll-description" v-model="pollDescr"
-        :placeholder="$t('views.create_poll.title')"></textarea>
+      <textarea
+        spellcheck="false"
+        class="poll-description"
+        v-model="pollDescr"
+        :placeholder="$t('views.create_poll.title')"
+      ></textarea>
       <div class="generate-box">
         <div @click="generateQuestions()" class="generate-btn">
-          <img class="generate-img" :src="generateIcon" alt="generate button image" />
+          <img
+            class="generate-img"
+            :src="generateIcon"
+            alt="generate button image"
+          />
         </div>
       </div>
     </div>
 
     <div v-if="showLoader" class="wait-animation">
-      <LottieAnimation class="wait-lottie" :animation-data="rellenoLottie" :auto-play="true" :loop="true" />
+      <LottieAnimation
+        class="wait-lottie"
+        :animation-data="rellenoLottie"
+        :auto-play="true"
+        :loop="true"
+      />
     </div>
-    <div v-else-if="!showLoader && questions.length <= 0" class="wait-animation">
-      <LottieAnimation class="wait-lottie" :animation-data="waitingLottie" :auto-play="true" :loop="true" />
+    <div
+      v-else-if="!showLoader && questions.length <= 0"
+      class="wait-animation"
+    >
+      <LottieAnimation
+        class="wait-lottie"
+        :animation-data="waitingLottie"
+        :auto-play="true"
+        :loop="true"
+      />
     </div>
 
     <div class="questions-list" v-if="questions && questions.length > 0">
       <TransitionGroup name="list" tag="div">
         <div class="question" v-for="question in questions" :key="question.id">
           <div>
-            <h1 class="question-title" contenteditable="true" spellcheck="false"
-              v-on:key.capture="changeQuestion(question.id)">
+            <h1
+              class="question-title"
+              contenteditable="true"
+              spellcheck="false"
+              v-on:key.capture="changeQuestion(question.id)"
+            >
               {{ question.question }}
             </h1>
             <div class="delete">
-              <img width="32" height="32" :src="trashIcon" alt="delete answer" />
+              <img
+                @click="deleteQuestion(question.id)"
+                width="32"
+                height="32"
+                :src="trashIcon"
+                alt="delete answer"
+              />
             </div>
           </div>
           <div class="question-answers">
             <div class="answer-list">
-              <div class="answer" v-for="answer in question.answers" :key="answer.id" contenteditable="true"
-                spellcheck="false" v-on:key.capture="changeAnswer(answer.id)">
-                <div class="answer-option">{{ answer.text }}</div>
+              <div
+                class="answer"
+                v-for="answer in question.answers"
+                :key="answer.id"
+              >
+                <div class="answer-option">
+                  <div
+                    contenteditable="true"
+                    spellcheck="false"
+                    v-on:key.capture="changeAnswer(answer.id)"
+                  >
+                    {{ answer.text }}
+                  </div>
+                </div>
                 <div class="delete">
-                  <img width="32" height="32" :src="deleteIcon" alt="delete answer" />
+                  <img
+                    @click="deleteAnswer(answer.id, question.id)"
+                    width="32"
+                    height="32"
+                    :src="deleteIcon"
+                    alt="delete answer"
+                  />
                 </div>
               </div>
               <div class="other" v-if="question.other == true">
                 <input class="other-option" placeholder="Relleno" type="text" />
                 <div class="delete">
-                  <img width="32" height="32" :src="deleteIcon" alt="delete answer" />
+                  <img
+                    @click="deleteOtherAnswer(question.id)"
+                    width="32"
+                    height="32"
+                    :src="deleteIcon"
+                    alt="delete answer"
+                  />
                 </div>
               </div>
             </div>
@@ -73,6 +132,7 @@ export default {
   props: {
     user: Object,
   },
+  components: { LottieAnimation },
   data() {
     return {
       pollMaxCount: 10,
@@ -92,7 +152,7 @@ export default {
   },
   methods: {
     generateQuestions() {
-      this.showLoader = true
+      this.showLoader = true;
       console.log("wait for the response please...", {
         poll_title: this.pollTitle,
         poll_description: this.pollDescr,
@@ -108,9 +168,9 @@ export default {
           this.questions = res.data.generated.questions;
         })
         .then(() => {
-          this.showLoader = false
-          this.showQuestions = true
-        })
+          this.showLoader = false;
+          this.showQuestions = true;
+        });
     },
     changeQuestion(id, newQuestionText) {
       const questionIndex = this.questions.findIndex(
@@ -136,15 +196,42 @@ export default {
             ...this.questions[questionIndex].answers[answerIndex],
             text: newAnswerText,
           });
-          console.log(this.questions[questionIndex].answers[answerIndex])
+          console.log(this.questions[questionIndex].answers[answerIndex]);
         }
       }
     },
-    deleteAnswer() {
+    deleteQuestion(questionId) {
+      return (this.questions = this.questions.filter(
+        (question) => question.id !== questionId
+      ));
+    },
+    deleteAnswer(answerId, questionId) {
+      const questionIndex = this.questions.findIndex(
+        (question) => question.id === questionId
+      );
 
-    }
+      if (this.questions[questionIndex].answers.length >= 1) {
+        if (questionIndex !== -1) {
+          this.questions[questionIndex].answers = this.questions[
+            questionIndex
+          ].answers.filter((answer) => answer.id !== answerId);
+        }
+      }
+    },
+    deleteOtherAnswer(questionId) {
+      const questionIndex = this.questions.findIndex(
+        (question) => question.id === questionId
+      );
+
+      if (this.questions[questionIndex].answers.length >= 1) {
+        if (questionIndex !== -1) {
+          this.questions[questionIndex].other = this.questions[
+            questionIndex
+          ].other = false;
+        }
+      }
+    },
   },
-  components: { LottieAnimation },
 };
 </script>
 
@@ -316,13 +403,20 @@ div.poll-view {
               font-weight: 800;
               outline: none;
               font-size: 1em;
-              height: 32px;
+              height: auto;
               display: grid;
               align-items: center;
 
               &:hover {
                 cursor: pointer;
                 background-color: $dark-s2;
+              }
+
+              div {
+                height: auto;
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+                -webkit-box-orient: vertical;
               }
             }
 
@@ -577,13 +671,20 @@ div.poll-view {
                 font-weight: 800;
                 outline: none;
                 font-size: 0.8em;
-                height: 32px;
+                height: auto;
                 display: grid;
                 align-items: center;
 
                 &:hover {
                   cursor: pointer;
                   background-color: $dark-s2;
+                }
+
+                div {
+                  height: auto;
+                  -webkit-line-clamp: 3;
+                  line-clamp: 3;
+                  -webkit-box-orient: vertical;
                 }
               }
 
