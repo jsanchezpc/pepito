@@ -1,7 +1,15 @@
 <template>
   <div id="app">
-    <TopNav v-if="!isMobile && isUserLoaded" :user="user" @displayConfig="showConfig()" />
-    <TopNavPortrait v-else-if="isUserLoaded" :user="user" @displayConfig="showConfig()" />
+    <TopNav
+      v-if="!isMobile && isUserLoaded"
+      :user="user"
+      @displayConfig="showConfig()"
+    />
+    <TopNavPortrait
+      v-else-if="isUserLoaded"
+      :user="user"
+      @displayConfig="showConfig()"
+    />
     <ConfigComponent v-if="configBoo" @displayConfig="showConfig()" />
     <router-view v-if="isUserLoaded || toLog" :user="user" />
   </div>
@@ -27,19 +35,29 @@ export default {
       toLog: false,
       isMobile: false,
       configBoo: false,
+      isOnline: navigator.onLine,
     };
   },
   mounted() {
     this.checkUser();
     this.checkWindowSize();
+    this.checkInternetConnection();
+
+    window.addEventListener("online", this.checkInternetConnection);
+    window.addEventListener("offline", this.checkInternetConnection);
     window.addEventListener("resize", this.checkWindowSize);
   },
   beforeUnmount() {
+    window.removeEventListener("online", this.checkInternetConnection);
+    window.removeEventListener("offline", this.checkInternetConnection);
     window.removeEventListener("resize", this.checkWindowSize);
   },
   methods: {
+    checkInternetConnection() {
+      this.isOnline = navigator.onLine;
+    },
     checkUser() {
-      if (localStorage.getItem("user") && localStorage.getItem("token")) {
+      if (this.isOnline && localStorage.getItem("user") && localStorage.getItem("token")) {
         useUserStore()
           .findUser(JSON.parse(localStorage.getItem("user"))._id)
           .then(() => {
@@ -53,6 +71,7 @@ export default {
             this.$router.push("/login");
           });
       } else {
+        console.log('caca')
         this.toLog = true;
         this.isUserLoaded = false;
         localStorage.clear();
