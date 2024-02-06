@@ -113,7 +113,7 @@
     </div>
     <div v-if="questions && questions.length > 0" class="save-poll">
       <div @click="$router.push('/')" class="discard">Discard</div>
-      <div class="save">Save</div>
+      <div @click="savePoll()" class="save">Save</div>
     </div>
   </div>
 </template>
@@ -152,6 +152,9 @@ export default {
   },
   methods: {
     generateQuestions() {
+      if (this.questions.length > 0) {
+        this.questions = [];
+      }
       this.showLoader = true;
       console.log("wait for the response please...", {
         poll_title: this.pollTitle,
@@ -183,6 +186,7 @@ export default {
         });
       }
     },
+
     changeAnswer(questionId, answerId, newAnswerText) {
       const questionIndex = this.questions.findIndex(
         (question) => question.id === questionId
@@ -196,10 +200,10 @@ export default {
             ...this.questions[questionIndex].answers[answerIndex],
             text: newAnswerText,
           });
-          console.log(this.questions[questionIndex].answers[answerIndex]);
         }
       }
     },
+
     deleteQuestion(questionId) {
       return (this.questions = this.questions.filter(
         (question) => question.id !== questionId
@@ -230,6 +234,9 @@ export default {
           ].other = false;
         }
       }
+    },
+    savePoll() {
+      console.log("poll: ", this.questions);
     },
   },
 };
@@ -321,7 +328,6 @@ div.poll-view {
     }
 
     .list-move,
-    /* apply transition to moving elements */
     .list-enter-active,
     .list-leave-active {
       transition: all 0.5s ease;
@@ -333,8 +339,6 @@ div.poll-view {
       transform: translateX(30px);
     }
 
-    /* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
     .list-leave-active {
       position: absolute;
     }
@@ -417,6 +421,7 @@ div.poll-view {
                 -webkit-line-clamp: 3;
                 line-clamp: 3;
                 -webkit-box-orient: vertical;
+                outline: none;
               }
             }
 

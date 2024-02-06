@@ -71,7 +71,6 @@ export default {
             this.$router.push("/login");
           });
       } else {
-        console.log('caca')
         this.toLog = true;
         this.isUserLoaded = false;
         localStorage.clear();

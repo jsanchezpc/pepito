@@ -23,6 +23,7 @@ export const useUserStore = defineStore('user', {
             }
              catch (error) {
                 console.error(error);
+                localStorage.clear()
             }
         },
         update_user(new_user) {

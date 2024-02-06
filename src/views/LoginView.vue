@@ -28,7 +28,6 @@
             <label for="name-signup">{{ $t('views.login_view.signup.user') }}</label>
             <input v-model="signName" autocomplete="username" :placeholder="$t('views.login_view.signup.user_placeholder')" required type="text"
               id="name-signup" />
-
             <label for="email-signup">{{ $t('views.login_view.signup.email') }}</label>
             <input v-model="signEmail" autocomplete="email" :placeholder="$t('views.login_view.signup.email_placeholder')" required type="email"
               id="email-signup" />
@@ -87,7 +86,7 @@ export default {
           username: this.signName,
           email: this.signEmail,
           password: this.signPass,
-          language: Intl.DateTimeFormat().resolvedOptions().locale // temporal
+          language: this.$i18n.locale
         })
         .then((response) => {
           if (response.data.ok === true) {
