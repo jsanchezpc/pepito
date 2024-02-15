@@ -34,6 +34,7 @@
         :loop="true"
       />
     </div>
+
     <div
       v-else-if="!showLoader && questions.length <= 0"
       class="wait-animation"
@@ -46,71 +47,18 @@
       />
     </div>
 
-    <div class="questions-list" v-if="questions && questions.length > 0">
+    <div v-if="questions && questions.length > 0" class="question-list">
       <TransitionGroup name="list" tag="div">
-        <div class="question" v-for="question in questions" :key="question.id">
-          <div>
-            <h1
-              class="question-title"
-              contenteditable="true"
-              spellcheck="false"
-              v-on:key.capture="changeQuestion(question.id)"
-            >
-              {{ question.question }}
-            </h1>
-            <div class="delete">
-              <img
-                @click="deleteQuestion(question.id)"
-                width="32"
-                height="32"
-                :src="trashIcon"
-                alt="delete answer"
-              />
-            </div>
-          </div>
-          <div class="question-answers">
-            <div class="answer-list">
-              <div
-                class="answer"
-                v-for="answer in question.answers"
-                :key="answer.id"
-              >
-                <div class="answer-option">
-                  <div
-                    contenteditable="true"
-                    spellcheck="false"
-                    v-on:key.capture="changeAnswer(answer.id)"
-                  >
-                    {{ answer.text }}
-                  </div>
-                </div>
-                <div class="delete">
-                  <img
-                    @click="deleteAnswer(answer.id, question.id)"
-                    width="32"
-                    height="32"
-                    :src="deleteIcon"
-                    alt="delete answer"
-                  />
-                </div>
-              </div>
-              <div class="other" v-if="question.other == true">
-                <input class="other-option" placeholder="Relleno" type="text" />
-                <div class="delete">
-                  <img
-                    @click="deleteOtherAnswer(question.id)"
-                    width="32"
-                    height="32"
-                    :src="deleteIcon"
-                    alt="delete answer"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AnswerTemplate
+          v-for="question in questions"
+          :key="question.id"
+          :question="question"
+          @deleteQuestion="deleteQuestion"
+          @deleteAnswer="deleteAnswer"
+        />
       </TransitionGroup>
     </div>
+
     <div v-if="questions && questions.length > 0" class="save-poll">
       <div @click="$router.push('/')" class="discard">Discard</div>
       <div @click="savePoll()" class="save">Save</div>
@@ -119,11 +67,10 @@
 </template>
 
 <script>
+import AnswerTemplate from "@/components/AnswerTemplate";
 import waitingJson from "@/assets/waiting_lottie.json";
 import rellenoJson from "@/assets/relleno_lottie.json";
 import generateSvg from "@/assets/generate.svg";
-import deleteSvg from "@/assets/delete.svg";
-import trashSvg from "@/assets/trash.svg";
 import axios from "axios";
 import { LottieAnimation } from "lottie-web-vue";
 
@@ -132,7 +79,7 @@ export default {
   props: {
     user: Object,
   },
-  components: { LottieAnimation },
+  components: { LottieAnimation, AnswerTemplate },
   data() {
     return {
       pollMaxCount: 10,
@@ -141,8 +88,6 @@ export default {
       waitingLottie: waitingJson,
       rellenoLottie: rellenoJson,
       generateIcon: generateSvg,
-      deleteIcon: deleteSvg,
-      trashIcon: trashSvg,
       showQuestions: false,
       showLoader: false,
       generatedQuestions: [],
@@ -175,35 +120,6 @@ export default {
           this.showQuestions = true;
         });
     },
-    changeQuestion(id, newQuestionText) {
-      const questionIndex = this.questions.findIndex(
-        (question) => question.id === id
-      );
-      if (questionIndex !== -1) {
-        this.$set(this.questions, questionIndex, {
-          ...this.questions[questionIndex],
-          question: newQuestionText,
-        });
-      }
-    },
-
-    changeAnswer(questionId, answerId, newAnswerText) {
-      const questionIndex = this.questions.findIndex(
-        (question) => question.id === questionId
-      );
-      if (questionIndex !== -1) {
-        const answerIndex = this.questions[questionIndex].answers.findIndex(
-          (answer) => answer.id === answerId
-        );
-        if (answerIndex !== -1) {
-          this.$set(this.questions[questionIndex].answers, answerIndex, {
-            ...this.questions[questionIndex].answers[answerIndex],
-            text: newAnswerText,
-          });
-        }
-      }
-    },
-
     deleteQuestion(questionId) {
       return (this.questions = this.questions.filter(
         (question) => question.id !== questionId
@@ -318,167 +234,18 @@ div.poll-view {
     }
   }
 
-  div.questions-list {
+  div.question-list {
     width: 50dvw;
     margin: 0 auto;
-    position: relative;
 
-    &:first-child {
-      margin-top: 32px;
-    }
-
-    .list-move,
     .list-enter-active,
     .list-leave-active {
       transition: all 0.5s ease;
     }
-
     .list-enter-from,
     .list-leave-to {
       opacity: 0;
       transform: translateX(30px);
-    }
-
-    .list-leave-active {
-      position: absolute;
-    }
-
-    div.question {
-      border-radius: 32px;
-      margin: 32px auto;
-
-      div {
-        display: flex;
-        flex-direction: row;
-
-        h1.question-title {
-          font-size: 1.35em;
-          margin: 0;
-          text-align: center;
-          flex: 0.95;
-          outline: none;
-
-          &:focus {
-            background-color: $dark-s1;
-            border-radius: 4px;
-          }
-        }
-
-        div.delete {
-          flex: 0.05;
-          display: grid;
-          place-content: center;
-          margin-left: 8px;
-
-          img {
-            width: 24px;
-
-            &:hover {
-              cursor: pointer;
-            }
-          }
-        }
-      }
-
-      div.question-answers {
-        div.answer-list {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-
-          &:first-child {
-            margin-top: 4px;
-          }
-
-          div.answer {
-            display: flex;
-            flex-direction: row;
-            outline: none;
-            margin-top: 4px;
-
-            div.answer-option {
-              flex: 0.98;
-              padding: 8px;
-              border-radius: 8px;
-              margin: 0 auto 4px;
-              color: $primary;
-              background-color: $dark-s1;
-              border: none;
-              font-weight: 800;
-              outline: none;
-              font-size: 1em;
-              height: auto;
-              display: grid;
-              align-items: center;
-
-              &:hover {
-                cursor: pointer;
-                background-color: $dark-s2;
-              }
-
-              div {
-                height: auto;
-                -webkit-line-clamp: 3;
-                line-clamp: 3;
-                -webkit-box-orient: vertical;
-                outline: none;
-              }
-            }
-
-            div.delete {
-              flex: -0.8;
-              display: grid;
-              place-content: center;
-              margin-bottom: 4px;
-              margin-left: 8px;
-
-              img {
-                width: 28px;
-
-                &:hover {
-                  fill: red;
-                  cursor: pointer;
-                }
-              }
-            }
-          }
-
-          div.other {
-            input.other-option {
-              padding: 8px;
-              border: 2px solid $dark-light;
-              border-radius: 8px;
-              margin: 4px auto 4px;
-              color: $dark;
-              font-weight: 800;
-              outline: none;
-              width: -webkit-fill-available;
-              background-color: $dark-light;
-              height: 32px;
-              display: grid;
-              align-items: center;
-              flex: 1;
-            }
-
-            div.delete {
-              flex: -0.8;
-              display: grid;
-              place-content: center;
-              margin-bottom: 4px;
-              margin-left: 8px;
-
-              img {
-                width: 28px;
-
-                &:hover {
-                  fill: red;
-                  cursor: pointer;
-                }
-              }
-            }
-          }
-        }
-      }
     }
   }
 
@@ -604,149 +371,18 @@ div.poll-view {
       }
     }
 
-    div.questions-list {
-      width: 100%;
-      position: relative;
+    div.question-list {
+      width: 80dvw;
+      margin: 0 auto;
 
-      &:first-child {
-        margin-top: 32px;
+      .list-enter-active,
+      .list-leave-active {
+        transition: all 0.5s ease;
       }
-
-      div.question {
-        border-radius: 32px;
-        margin: 32px auto;
-
-        div {
-          display: flex;
-          flex-direction: row;
-
-          h1.question-title {
-            font-size: 1.35em;
-            margin: 0;
-            text-align: center;
-            flex: 0.95;
-            outline: none;
-
-            &:focus {
-              background-color: $dark-s1;
-              border-radius: 4px;
-            }
-          }
-
-          div.delete {
-            flex: 0.05;
-            display: grid;
-            place-content: center;
-            margin-left: 8px;
-
-            img {
-              width: 24px;
-
-              &:hover {
-                cursor: pointer;
-              }
-            }
-          }
-        }
-
-        div.question-answers {
-          div.answer-list {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-
-            &:first-child {
-              margin-top: 4px;
-            }
-
-            div.answer {
-              display: flex;
-              flex-direction: row;
-              outline: none;
-              margin-top: 4px;
-
-              div.answer-option {
-                flex: 0.98;
-                padding: 8px;
-                border-radius: 8px;
-                margin: 0 auto 4px;
-                color: $primary;
-                background-color: $dark-s1;
-                border: none;
-                font-weight: 800;
-                outline: none;
-                font-size: 0.8em;
-                height: auto;
-                display: grid;
-                align-items: center;
-
-                &:hover {
-                  cursor: pointer;
-                  background-color: $dark-s2;
-                }
-
-                div {
-                  height: auto;
-                  -webkit-line-clamp: 3;
-                  line-clamp: 3;
-                  -webkit-box-orient: vertical;
-                }
-              }
-
-              div.delete {
-                flex: -0.8;
-                display: grid;
-                place-content: center;
-                margin-bottom: 4px;
-                margin-left: 8px;
-
-                img {
-                  width: 28px;
-
-                  &:hover {
-                    fill: red;
-                    cursor: pointer;
-                  }
-                }
-              }
-            }
-
-            div.other {
-              input.other-option {
-                padding: 8px;
-                border: 2px solid $dark-light;
-                border-radius: 8px;
-                margin: 4px auto 4px;
-                color: $dark;
-                font-weight: 800;
-                outline: none;
-                width: -webkit-fill-available;
-                background-color: $dark-light;
-                height: 32px;
-                display: grid;
-                align-items: center;
-                flex: 1;
-              }
-
-              div.delete {
-                flex: -0.8;
-                display: grid;
-                place-content: center;
-                margin-bottom: 4px;
-                margin-left: 8px;
-
-                img {
-                  width: 28px;
-
-                  &:hover {
-                    fill: red;
-                    cursor: pointer;
-                  }
-                }
-              }
-            }
-          }
-        }
+      .list-enter-from,
+      .list-leave-to {
+        opacity: 0;
+        transform: translateX(30px);
       }
     }
 
