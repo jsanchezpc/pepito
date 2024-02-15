@@ -1,5 +1,5 @@
 <template>
-  <div class="answer-template">
+  <form class="answer-template">
     <div class="question-title">
       <h1 contenteditable="true" spellcheck="false" type="text">
         {{ question.question }}
@@ -26,7 +26,7 @@
         />
       </div>
     </div>
-  </div>
+</form>
 </template>
 
 <script>
@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div.answer-template {
+form.answer-template {
   display: flex;
   flex-direction: column;
 
