@@ -1,63 +1,34 @@
 <template>
   <div class="poll-view" :class="{ 'fill-height': questions.length > 0 }">
     <div class="create-poll">
-      <input
-        spellcheck="false"
-        class="poll-title"
-        type="text"
-        v-model="pollTitle"
-        :placeholder="$t('views.create_poll.title')"
-      />
+      <input spellcheck="false" class="poll-title" type="text" v-model="pollTitle"
+        :placeholder="$t('views.create_poll.title')" />
       <br />
-      <textarea
-        spellcheck="false"
-        class="poll-description"
-        v-model="pollDescr"
-        :placeholder="$t('views.create_poll.title')"
-      ></textarea>
+      <textarea spellcheck="false" class="poll-description" v-model="pollDescr"
+        :placeholder="$t('views.create_poll.title')"></textarea>
       <div class="generate-box">
         <div @click="generateQuestions()" class="generate-btn">
-          <img
-            class="generate-img"
-            :src="generateIcon"
-            alt="generate button image"
-          />
+          <img class="generate-img" :src="generateIcon" alt="generate button image" />
         </div>
       </div>
     </div>
 
     <div v-if="showLoader" class="wait-animation">
-      <LottieAnimation
-        class="wait-lottie"
-        :animation-data="rellenoLottie"
-        :auto-play="true"
-        :loop="true"
-      />
+      <LottieAnimation class="wait-lottie" :animation-data="rellenoLottie" :auto-play="true" :loop="true" />
     </div>
 
-    <div
-      v-else-if="!showLoader && questions.length <= 0"
-      class="wait-animation"
-    >
-      <LottieAnimation
-        class="wait-lottie"
-        :animation-data="waitingLottie"
-        :auto-play="true"
-        :loop="true"
-      />
+    <div v-else-if="!showLoader && questions.length <= 0" class="wait-animation">
+      <LottieAnimation class="wait-lottie" :animation-data="waitingLottie" :auto-play="true" :loop="true" />
     </div>
 
-    <div v-if="questions && questions.length > 0" class="question-list">
-      <TransitionGroup name="list" tag="div">
-        <AnswerTemplate
-          v-for="question in questions"
-          :key="question.id"
-          :question="question"
-          @deleteQuestion="deleteQuestion"
-          @deleteAnswer="deleteAnswer"
-        />
-      </TransitionGroup>
-    </div>
+    <TransitionGroup name="list" tag="div">
+      <form v-if="questions && questions.length > 0" class="question-list">
+
+        <AnswerTemplate v-for="question in questions" :key="question.id" :question="question"
+          @deleteQuestion="deleteQuestion" @deleteAnswer="deleteAnswer" />
+
+      </form>
+    </TransitionGroup>
 
     <div v-if="questions && questions.length > 0" class="save-poll">
       <div @click="$router.push('/')" class="discard">Discard</div>
@@ -67,6 +38,7 @@
 </template>
 
 <script>
+import { usePollStore } from '@/store/poll-store';
 import AnswerTemplate from "@/components/AnswerTemplate";
 import waitingJson from "@/assets/waiting_lottie.json";
 import rellenoJson from "@/assets/relleno_lottie.json";
@@ -90,7 +62,6 @@ export default {
       generateIcon: generateSvg,
       showQuestions: false,
       showLoader: false,
-      generatedQuestions: [],
       questions: [],
       language: JSON.parse(localStorage.getItem("user")).language,
     };
@@ -101,24 +72,31 @@ export default {
         this.questions = [];
       }
       this.showLoader = true;
-      console.log("wait for the response please...", {
-        poll_title: this.pollTitle,
-        poll_description: this.pollDescr,
-      });
       axios
         .post(`${process.env.VUE_APP_API_URL}/generatePoll`, {
           poll_title: this.pollTitle,
           poll_description: this.pollDescr,
           pollMaxCount: this.pollMaxCount,
         })
-        .then((res) => {
+        .then(async (res) => {
           console.log(res);
-          this.questions = res.data.generated.questions;
-        })
-        .then(() => {
+          await usePollStore().update_poll(res.data.generated);
+          this.questions = await usePollStore().get_poll();
+          console.log(this.questions);
           this.showLoader = false;
           this.showQuestions = true;
+        })
+        .catch((error) => {
+          console.error('Error generating poll:', error);
+          this.showLoader = false;
         });
+    },
+    savePoll() {
+      axios
+        .post(`${process.env.VUE_APP_API_URL}/signup`, this.questions)
+        .then(response => {
+          console.log(response)
+        })
     },
     deleteQuestion(questionId) {
       return (this.questions = this.questions.filter(
@@ -150,9 +128,6 @@ export default {
           ].other = false;
         }
       }
-    },
-    savePoll() {
-      console.log("poll: ", this.questions);
     },
   },
 };
@@ -234,7 +209,7 @@ div.poll-view {
     }
   }
 
-  div.question-list {
+  form.question-list {
     width: 50dvw;
     margin: 0 auto;
 
@@ -242,6 +217,7 @@ div.poll-view {
     .list-leave-active {
       transition: all 0.5s ease;
     }
+
     .list-enter-from,
     .list-leave-to {
       opacity: 0;
@@ -371,7 +347,7 @@ div.poll-view {
       }
     }
 
-    div.question-list {
+    form.question-list {
       width: 80dvw;
       margin: 0 auto;
 
@@ -379,6 +355,7 @@ div.poll-view {
       .list-leave-active {
         transition: all 0.5s ease;
       }
+
       .list-enter-from,
       .list-leave-to {
         opacity: 0;
