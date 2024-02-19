@@ -1,32 +1,61 @@
 <template>
   <div class="poll-view" :class="{ 'fill-height': questions.length > 0 }">
     <div class="create-poll">
-      <input spellcheck="false" class="poll-title" type="text" v-model="pollTitle"
-        :placeholder="$t('views.create_poll.title')" />
+      <input
+        spellcheck="false"
+        class="poll-title"
+        type="text"
+        v-model="pollTitle"
+        :placeholder="$t('views.create_poll.title')"
+      />
       <br />
-      <textarea spellcheck="false" class="poll-description" v-model="pollDescr"
-        :placeholder="$t('views.create_poll.title')"></textarea>
+      <textarea
+        spellcheck="false"
+        class="poll-description"
+        v-model="pollDescr"
+        :placeholder="$t('views.create_poll.title')"
+      ></textarea>
       <div class="generate-box">
         <div @click="generateQuestions()" class="generate-btn">
-          <img class="generate-img" :src="generateIcon" alt="generate button image" />
+          <img
+            class="generate-img"
+            :src="generateIcon"
+            alt="generate button image"
+          />
         </div>
       </div>
     </div>
 
     <div v-if="showLoader" class="wait-animation">
-      <LottieAnimation class="wait-lottie" :animation-data="rellenoLottie" :auto-play="true" :loop="true" />
+      <LottieAnimation
+        class="wait-lottie"
+        :animation-data="rellenoLottie"
+        :auto-play="true"
+        :loop="true"
+      />
     </div>
 
-    <div v-else-if="!showLoader && questions.length <= 0" class="wait-animation">
-      <LottieAnimation class="wait-lottie" :animation-data="waitingLottie" :auto-play="true" :loop="true" />
+    <div
+      v-else-if="!showLoader && questions.length <= 0"
+      class="wait-animation"
+    >
+      <LottieAnimation
+        class="wait-lottie"
+        :animation-data="waitingLottie"
+        :auto-play="true"
+        :loop="true"
+      />
     </div>
 
     <TransitionGroup name="list" tag="div">
       <form v-if="questions && questions.length > 0" class="question-list">
-
-        <AnswerTemplate v-for="question in questions" :key="question.id" :question="question"
-          @deleteQuestion="deleteQuestion" @deleteAnswer="deleteAnswer" />
-
+        <AnswerTemplate
+          v-for="question in questions"
+          :key="question.id"
+          :question="question"
+          @deleteQuestion="deleteQuestion"
+          @deleteAnswer="deleteAnswer"
+        />
       </form>
     </TransitionGroup>
 
@@ -38,7 +67,7 @@
 </template>
 
 <script>
-import { usePollStore } from '@/store/poll-store';
+import { usePollStore } from "@/store/poll-store";
 import AnswerTemplate from "@/components/AnswerTemplate";
 import waitingJson from "@/assets/waiting_lottie.json";
 import rellenoJson from "@/assets/relleno_lottie.json";
@@ -78,25 +107,43 @@ export default {
           poll_description: this.pollDescr,
           pollMaxCount: this.pollMaxCount,
         })
-        .then(async (res) => {
+        .then((res) => {
           console.log(res);
-          await usePollStore().update_poll(res.data.generated);
-          this.questions = await usePollStore().get_poll();
+          usePollStore().update_poll(res.data.generated.questions);
+        })
+        .then(() => {
+          this.questions = usePollStore().get_poll;
           console.log(this.questions);
           this.showLoader = false;
           this.showQuestions = true;
         })
         .catch((error) => {
-          console.error('Error generating poll:', error);
+          console.error("Error generating poll:", error);
           this.showLoader = false;
         });
     },
     savePoll() {
       axios
-        .post(`${process.env.VUE_APP_API_URL}/signup`, this.questions)
-        .then(response => {
-          console.log(response)
+        .post(`${process.env.VUE_APP_API_URL}/createPoll`, {
+          author: this.user.username,
+          title: this.pollTitle,
+          description: this.pollDescr,
+          questions: this.questions,
         })
+        .then((response) => {
+          console.log(response);
+          if (response.data.ok) {
+            try {
+              localStorage.setItem(response.data.poll._id);
+            } catch (error) {
+              console.log(error);
+            }
+          } else {
+            console.log('Error saving your poll.')
+          }
+        })
+        .then(() => this.$router.push("/"))
+        .catch((res) => console.log(res));
     },
     deleteQuestion(questionId) {
       return (this.questions = this.questions.filter(
@@ -129,6 +176,9 @@ export default {
         }
       }
     },
+  },
+  beforeMount() {
+    usePollStore().remove_poll();
   },
 };
 </script>
