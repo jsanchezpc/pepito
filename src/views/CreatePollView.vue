@@ -134,12 +134,15 @@ export default {
           console.log(response);
           if (response.data.ok) {
             try {
-              localStorage.setItem(response.data.poll._id);
+              localStorage.setItem(
+                JSON.stringify(response.data.poll._id),
+                JSON.stringify(response.data.poll)
+              );
             } catch (error) {
               console.log(error);
             }
           } else {
-            console.log('Error saving your poll.')
+            console.log("Error saving your poll.");
           }
         })
         .then(() => this.$router.push("/"))
