@@ -4,7 +4,6 @@
       <h1>{{ $t("views.home.title") }}</h1>
     </div>
     <div v-else class="no-poll">
-      <h2 v-if="user"><span style="font-weight: 300;">{{ $t("views.home.greetings_message") }},</span> {{ user.username }}</h2>
       <img :src="draw" alt="poll draw" />
       <h1>{{ $t("views.home.no_poll_message") }}</h1>
       <PollBtn />
@@ -19,6 +18,7 @@
 <script>
 import PollBtn from "@/components/PollBtn.vue";
 import drawSvg from "@/assets/quest.svg";
+// import axios from "axios"
 export default {
   name: "HomeView",
   props: {
@@ -36,6 +36,12 @@ export default {
   beforeMount() {
     if (!this.$props.user) {
       this.$router.go('/')
+    }
+  },
+  computed: {
+    getUserPolls() {
+      console.log("holaa, montao")
+      return true
     }
   }
 };

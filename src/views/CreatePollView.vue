@@ -40,7 +40,7 @@
 import { usePollStore } from "@/store/poll-store";
 import QuestionTemplate from "@/components/QuestionTemplate";
 import waitingJson from "@/assets/waiting_lottie.json";
-import rellenoJson from "@/assets/relleno_lottie.json";
+import rellenoJson from "@/assets/wait.json";
 import generateSvg from "@/assets/generate.svg";
 import axios from "axios";
 import { LottieAnimation } from "lottie-web-vue";
