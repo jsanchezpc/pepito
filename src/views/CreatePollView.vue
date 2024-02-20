@@ -1,63 +1,31 @@
 <template>
   <div class="poll-view" :class="{ 'fill-height': questions.length > 0 }">
     <div class="create-poll">
-      <input
-        spellcheck="false"
-        class="poll-title"
-        type="text"
-        v-model="pollTitle"
-        :placeholder="$t('views.create_poll.title')"
-      />
+      <input spellcheck="false" class="poll-title" type="text" v-model="pollTitle"
+        :placeholder="$t('views.create_poll.title')" />
       <br />
-      <textarea
-        spellcheck="false"
-        class="poll-description"
-        v-model="pollDescr"
-        :placeholder="$t('views.create_poll.title')"
-      ></textarea>
+      <textarea spellcheck="false" class="poll-description" v-model="pollDescr"
+        :placeholder="$t('views.create_poll.title')"></textarea>
       <div class="generate-box">
         <div @click="generateQuestions()" class="generate-btn">
-          <img
-            class="generate-img"
-            :src="generateIcon"
-            alt="generate button image"
-          />
+          <img class="generate-img" :src="generateIcon" alt="generate button image" />
         </div>
       </div>
     </div>
 
     <div v-if="showLoader" class="wait-animation">
-      <LottieAnimation
-        class="wait-lottie"
-        :animation-data="rellenoLottie"
-        :auto-play="true"
-        :loop="true"
-      />
+      <LottieAnimation class="wait-lottie" :animation-data="rellenoLottie" :auto-play="true" :loop="true" />
     </div>
 
-    <div
-      v-else-if="!showLoader && questions.length <= 0"
-      class="wait-animation"
-    >
-      <LottieAnimation
-        class="wait-lottie"
-        :animation-data="waitingLottie"
-        :auto-play="true"
-        :loop="true"
-      />
+    <div v-else-if="!showLoader && questions.length <= 0" class="wait-animation">
+      <LottieAnimation class="wait-lottie" :animation-data="waitingLottie" :auto-play="true" :loop="true" />
     </div>
 
     <TransitionGroup name="list" tag="div">
       <form v-if="questions && questions.length > 0" class="question-list">
-        <QuestionTemplate
-          v-for="question in questions"
-          :key="question.id"
-          :question="question"
-          @changeQuestion="changeQuestion"
-          @changeAnswer="changeAnswer"
-          @deleteQuestion="deleteQuestion"
-          @deleteAnswer="deleteAnswer"
-        />
+        <QuestionTemplate v-for="question in questions" :key="question.id" :question="question"
+          @changeQuestion="changeQuestion" @changeAnswer="changeAnswer" @deleteQuestion="deleteQuestion"
+          @deleteAnswer="deleteAnswer" />
       </form>
     </TransitionGroup>
 
@@ -157,15 +125,18 @@ export default {
       this.questions[questionIndex].question = newQuestion;
     },
     changeAnswer(answerId, questionId, newAnswer) {
-      const questionIndex = this.questions.findIndex(
-        (question) => question.id === questionId
-      );
-      const answerIndex = this.questions[questionIndex].answers.findIndex(
-        (answer) => answer.id === answerId
-      );
+      try {
+        const questionIndex = this.questions.findIndex(
+          (question) => question.id === questionId
+        );
+        const answerIndex = this.questions[questionIndex].answers.findIndex(
+          (answer) => answer.id === answerId
+        );
 
-      this.questions[questionIndex].answers[answerIndex] = newAnswer;
-      console.log('respuesta cambiada: ', this.questions[questionIndex].answers[answerIndex])
+        this.questions[questionIndex].answers[answerIndex].text = newAnswer;
+      } catch (error) {
+        console.log(error)
+      }
     },
     deleteQuestion(questionId) {
       return (this.questions = this.questions.filter(
