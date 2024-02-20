@@ -1,17 +1,33 @@
 <template>
   <div class="answer-template">
     <div class="question-title">
-      <h1 contenteditable="true" spellcheck="false" type="text">
-        {{ question.question }}
-      </h1>
-      <img @click="deleteQuestion(question.id)" width="32" :src="trashIcon" alt="trash icon (delete question)" />
+      <input
+        @input="changeQuestion(questionObj.id, questionObj.question)"
+        spellcheck="false"
+        type="text"
+        v-model="questionObj.question"
+      />
+      <img
+        @click="deleteQuestion(question.id)"
+        width="32"
+        :src="trashIcon"
+        alt="trash icon (delete question)"
+      />
     </div>
 
-    <div v-for="answer in question.answers" :key="answer.id" class="question-answer">
-      <input type="text" :value="answer.text" />
-      <img @click="deleteAnswer(answer.id, question.id)" width="32" :src="deleteIcon" alt="delete icon (delete answer)" />
+    <div
+      v-for="answer in question.answers"
+      :key="answer.id"
+      class="question-answer"
+    >
+      <input  @input="changeAnswer(answer.id, questionId, answer.text)" type="text" v-model="answer.text" />
+      <img
+        @click="deleteAnswer(answer.id, question.id)"
+        width="32"
+        :src="deleteIcon"
+        alt="delete icon (delete answer)"
+      />
     </div>
-
   </div>
 </template>
 
@@ -19,7 +35,7 @@
 import deleteSvg from "@/assets/delete.svg";
 import trashSvg from "@/assets/trash.svg";
 export default {
-  name: "AnswerTemplate",
+  name: "QuestionTemplate",
   props: {
     question: Object,
   },
@@ -27,9 +43,16 @@ export default {
     return {
       deleteIcon: deleteSvg,
       trashIcon: trashSvg,
+      questionObj: this.question
     };
   },
   methods: {
+    changeQuestion(questionId, question) {
+      this.$emit("changeQuestion", questionId, question);
+    },
+    changeAnswer(answerId, questionId, answer) {
+      this.$emit("changeAnswer", answerId, questionId, answer);
+    },
     deleteQuestion(question) {
       this.$emit("deleteQuestion", question);
     },
@@ -74,7 +97,6 @@ div.answer-template {
     }
   }
 
-
   div.question-answer {
     display: flex;
     flex-direction: row;
@@ -105,6 +127,5 @@ div.answer-template {
       }
     }
   }
-
 }
 </style>

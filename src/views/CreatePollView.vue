@@ -49,10 +49,12 @@
 
     <TransitionGroup name="list" tag="div">
       <form v-if="questions && questions.length > 0" class="question-list">
-        <AnswerTemplate
+        <QuestionTemplate
           v-for="question in questions"
           :key="question.id"
           :question="question"
+          @changeQuestion="changeQuestion"
+          @changeAnswer="changeAnswer"
           @deleteQuestion="deleteQuestion"
           @deleteAnswer="deleteAnswer"
         />
@@ -68,7 +70,7 @@
 
 <script>
 import { usePollStore } from "@/store/poll-store";
-import AnswerTemplate from "@/components/AnswerTemplate";
+import QuestionTemplate from "@/components/QuestionTemplate";
 import waitingJson from "@/assets/waiting_lottie.json";
 import rellenoJson from "@/assets/relleno_lottie.json";
 import generateSvg from "@/assets/generate.svg";
@@ -80,7 +82,7 @@ export default {
   props: {
     user: Object,
   },
-  components: { LottieAnimation, AnswerTemplate },
+  components: { LottieAnimation, QuestionTemplate },
   data() {
     return {
       pollMaxCount: 10,
@@ -131,11 +133,11 @@ export default {
           questions: this.questions,
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (response.data.ok) {
             try {
               localStorage.setItem(
-                JSON.stringify(response.data.poll._id),
+                response.data.poll._id,
                 JSON.stringify(response.data.poll)
               );
             } catch (error) {
@@ -147,6 +149,23 @@ export default {
         })
         .then(() => this.$router.push("/"))
         .catch((res) => console.log(res));
+    },
+    changeQuestion(questionId, newQuestion) {
+      const questionIndex = this.questions.findIndex(
+        (question) => question.id === questionId
+      );
+      this.questions[questionIndex].question = newQuestion;
+    },
+    changeAnswer(answerId, questionId, newAnswer) {
+      const questionIndex = this.questions.findIndex(
+        (question) => question.id === questionId
+      );
+      const answerIndex = this.questions[questionIndex].answers.findIndex(
+        (answer) => answer.id === answerId
+      );
+
+      this.questions[questionIndex].answers[answerIndex] = newAnswer;
+      console.log('respuesta cambiada: ', this.questions[questionIndex].answers[answerIndex])
     },
     deleteQuestion(questionId) {
       return (this.questions = this.questions.filter(
