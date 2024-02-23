@@ -16,7 +16,7 @@ export default {
             greetings_message: "Hola",
 
         },
-        answers: {
+        metrics: {
             no_poll_message: "¡Empieza creando una encuesta!",
         },
         create_poll: {
@@ -57,13 +57,13 @@ export default {
         poll_btn: "Encuestar",
         topnav_portrait: {
             poll: "Encuestas",
-            answers: "Respuestas",
+            metrics: "Métricas",
             settings: "Configuración",
             login_button: "Entrar"
         },
         topnav: {
             poll: "Encuestas",
-            answers: "Respuestas",
+            metrics: "Métricas",
             login_button: "Entrar"
         }
     }

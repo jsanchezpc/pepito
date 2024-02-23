@@ -21,7 +21,7 @@
             <img width="32" height="32" :src="answersIcon" alt="config button" />
           </div>
           <div class="nav-link">
-            <router-link @click="toggleMenu()" to="/answers">{{ $t('components.topnav_portrait.answers') }}</router-link>
+            <router-link @click="toggleMenu()" to="/metrics">{{ $t('components.topnav_portrait.metrics') }}</router-link>
           </div>
         </div>
         <div class="nav-el config">

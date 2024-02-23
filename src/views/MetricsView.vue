@@ -1,9 +1,9 @@
 <template>
-  <div class="answer-view">
-    <div v-if="pollList" class="answers-list">blabla bla</div>
+  <div class="metrics-view">
+    <div v-if="pollList" class="metrics-list">blabla bla</div>
     <div class="no-poll">
       <img :src="draw" alt="poll draw" />
-      <h1>{{ $t("views.answers.no_poll_message") }}</h1>
+      <h1>{{ $t("views.metrics.no_poll_message") }}</h1>
       <PollBtn />
     </div>
   </div>
@@ -13,7 +13,7 @@
 import PollBtn from "@/components/PollBtn.vue";
 import drawSvg from "@/assets/no-ans.svg";
 export default {
-  name: "AnswerView",
+  name: "MetricsView",
   components: {
     PollBtn,
   },
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-div.answer-view {
+div.metrics-view {
   width: 80dvw;
   margin: 0 auto;
   height: calc(100dvh - 7dvh);

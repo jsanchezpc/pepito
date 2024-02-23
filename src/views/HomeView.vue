@@ -1,7 +1,9 @@
 <template>
   <div class="home">
-    <div v-if="pollList != null && pollList.length >= 1" class="poll-list">
-      <h1>{{ $t("views.home.title") }}</h1>
+    <div v-if="pollList && pollList.length >= 1" class="poll-view">
+      <div class="poll-list" v-for="poll in pollList" :key="poll._id">
+        <PollItem :poll="poll" />
+      </div>
     </div>
     <div v-else class="no-poll">
       <img :src="draw" alt="poll draw" />
@@ -16,9 +18,10 @@
 
 <script>
 import PollBtn from "@/components/PollBtn.vue";
+import PollItem from "@/components/PollItem.vue";
 import drawSvg from "@/assets/quest.svg";
-import { usePollStore } from "@/store/poll-store";
-// import axios from "axios"
+import axios from "axios";
+
 export default {
   name: "HomeView",
   props: {
@@ -26,23 +29,26 @@ export default {
   },
   components: {
     PollBtn,
+    PollItem
   },
   data() {
     return {
       draw: drawSvg,
-      pollList: null,
+      pollList: [],
     };
   },
   mounted() {
-    const user_token = localStorage.getItem('token')
-    try {
-      usePollStore().sync_poll(user_token);
-      this.pollList = usePollStore().get_poll_list
-      console.log('poll list --> ', this.pollList)
-    } 
-     catch (error) {
-      console.log(error);
-    }
+    const token = localStorage.getItem('token')
+    axios
+      .post(`${process.env.VUE_APP_API_URL}/syncPollList`, {
+        token: token,
+      })
+      .then((response) => {
+        if (response.data.pollList && response.data.pollList.length >= 1) {
+          this.pollList = response.data.pollList;
+        }
+      })
+      .catch((res) => console.log(res));
   },
   beforeMount() {
     if (!this.$props.user) {
@@ -74,6 +80,11 @@ div.home {
       font-weight: 300;
       color: $primary-light;
     }
+  }
+
+  div.poll-list {
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>

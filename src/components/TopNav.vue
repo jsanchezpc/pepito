@@ -7,7 +7,7 @@
       <router-link to="/">{{ $t('components.topnav.poll') }}</router-link>
     </div>
     <div>
-      <router-link to="/answers">{{ $t('components.topnav.answers') }}</router-link>
+      <router-link to="/metrics">{{ $t('components.topnav.metrics') }}</router-link>
     </div>
     <div v-if="user">
       <PollBtn />
