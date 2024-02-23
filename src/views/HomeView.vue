@@ -14,18 +14,18 @@
   </div>
 </template>
 
-
 <script>
 import PollBtn from "@/components/PollBtn.vue";
 import drawSvg from "@/assets/quest.svg";
+import { usePollStore } from "@/store/poll-store";
 // import axios from "axios"
 export default {
   name: "HomeView",
   props: {
-    user: Object
+    user: Object,
   },
   components: {
-    PollBtn
+    PollBtn,
   },
   data() {
     return {
@@ -33,17 +33,22 @@ export default {
       pollList: null,
     };
   },
-  beforeMount() {
-    if (!this.$props.user) {
-      this.$router.go('/')
+  mounted() {
+    const user_token = localStorage.getItem('token')
+    try {
+      usePollStore().sync_poll(user_token);
+      this.pollList = usePollStore().get_poll_list
+      console.log('poll list --> ', this.pollList)
+    } 
+     catch (error) {
+      console.log(error);
     }
   },
-  computed: {
-    getUserPolls() {
-      console.log("holaa, montao")
-      return true
+  beforeMount() {
+    if (!this.$props.user) {
+      this.$router.go("/");
     }
-  }
+  },
 };
 </script>
 

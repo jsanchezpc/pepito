@@ -1,31 +1,63 @@
 <template>
   <div class="poll-view" :class="{ 'fill-height': questions.length > 0 }">
     <div class="create-poll">
-      <input spellcheck="false" class="poll-title" type="text" v-model="pollTitle"
-        :placeholder="$t('views.create_poll.title')" />
+      <input
+        spellcheck="false"
+        class="poll-title"
+        type="text"
+        v-model="pollTitle"
+        :placeholder="$t('views.create_poll.title')"
+      />
       <br />
-      <textarea spellcheck="false" class="poll-description" v-model="pollDescr"
-        :placeholder="$t('views.create_poll.title')"></textarea>
+      <textarea
+        spellcheck="false"
+        class="poll-description"
+        v-model="pollDescr"
+        :placeholder="$t('views.create_poll.title')"
+      ></textarea>
       <div class="generate-box">
         <div @click="generateQuestions()" class="generate-btn">
-          <img class="generate-img" :src="generateIcon" alt="generate button image" />
+          <img
+            class="generate-img"
+            :src="generateIcon"
+            alt="generate button image"
+          />
         </div>
       </div>
     </div>
 
     <div v-if="showLoader" class="wait-animation">
-      <LottieAnimation class="wait-lottie" :animation-data="rellenoLottie" :auto-play="true" :loop="true" />
+      <LottieAnimation
+        class="wait-lottie"
+        :animation-data="rellenoLottie"
+        :auto-play="true"
+        :loop="true"
+      />
     </div>
 
-    <div v-else-if="!showLoader && questions.length <= 0" class="wait-animation">
-      <LottieAnimation class="wait-lottie" :animation-data="waitingLottie" :auto-play="true" :loop="true" />
+    <div
+      v-else-if="!showLoader && questions.length <= 0"
+      class="wait-animation"
+    >
+      <LottieAnimation
+        class="wait-lottie"
+        :animation-data="waitingLottie"
+        :auto-play="true"
+        :loop="true"
+      />
     </div>
 
     <TransitionGroup name="list" tag="div">
       <form v-if="questions && questions.length > 0" class="question-list">
-        <QuestionTemplate v-for="question in questions" :key="question.id" :question="question"
-          @changeQuestion="changeQuestion" @changeAnswer="changeAnswer" @deleteQuestion="deleteQuestion"
-          @deleteAnswer="deleteAnswer" />
+        <QuestionTemplate
+          v-for="question in questions"
+          :key="question.id"
+          :question="question"
+          @changeQuestion="changeQuestion"
+          @changeAnswer="changeAnswer"
+          @deleteQuestion="deleteQuestion"
+          @deleteAnswer="deleteAnswer"
+        />
       </form>
     </TransitionGroup>
 
@@ -63,6 +95,7 @@ export default {
       showLoader: false,
       questions: [],
       language: JSON.parse(localStorage.getItem("user")).language,
+      user_token: localStorage.getItem('token')
     };
   },
   methods: {
@@ -99,23 +132,15 @@ export default {
           title: this.pollTitle,
           description: this.pollDescr,
           questions: this.questions,
+          token: this.user_token
         })
         .then((response) => {
-          // console.log(response);
           if (response.data.ok) {
-            try {
-              localStorage.setItem(
-                response.data.poll._id,
-                JSON.stringify(response.data.poll)
-              );
-            } catch (error) {
-              console.log(error);
-            }
+            this.$router.push("/");
           } else {
             console.log("Error saving your poll.");
           }
         })
-        .then(() => this.$router.push("/"))
         .catch((res) => console.log(res));
     },
     changeQuestion(questionId, newQuestion) {
@@ -135,7 +160,7 @@ export default {
 
         this.questions[questionIndex].answers[answerIndex].text = newAnswer;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     deleteQuestion(questionId) {
