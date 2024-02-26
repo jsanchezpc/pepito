@@ -29,5 +29,20 @@ export const usePollStore = defineStore("poll", {
         })
         .catch((res) => console.log(res));
     },
+    deleteAndUpdateList(pollId, author) {
+      axios
+        .post(`${process.env.VUE_APP_API_URL}/deletePoll`, {
+          id: pollId,
+          author: author,
+          token: localStorage.getItem('token')
+        })
+        .then((response) => {
+          console.log(response)
+          if (response.data.ok) {
+            this.poll_list = response.data.pollList;
+          }
+        })
+        .catch((res) => console.log(res));
+    },
   },
 });
