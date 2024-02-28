@@ -15,19 +15,13 @@
         <span>13/02/2021</span>
       </div>
     </div>
-    <img
-      @click="displayOptions()"
-      width="32px"
-      :src="dotsIcon"
-      alt="delete question"
-    />
-    <div v-if="displayPollOpts" class="poll-options" @click="showPopup()">
-      <p>Delete</p>
-      <img width="16px" :src="trashIcon" />
+    <img @click="displayOptions()" width="32px" :src="dotsIcon" alt="delete question" />
+    <div v-if="displayPollOpts" class="poll-options">
+      <img width="16px" :src="trashIcon" @click="togglePopup()" />
     </div>
     <!-- <details>answer details here</details> -->
   </div>
-  <DeletePopup :deletePoll="deletePoll()" />
+  <DeletePopup v-if="displayPopup" @delete="deletePoll(poll._id, poll.author)" @closePopup="togglePopup()" />
 </template>
 
 <script>
@@ -41,7 +35,7 @@ export default {
   props: {
     poll: Object,
   },
-  component: {
+  components: {
     DeletePopup,
   },
   data() {
@@ -52,18 +46,17 @@ export default {
       displayPopup: false,
     };
   },
-  mounted() {
-    console.log(this.poll);
-  },
   methods: {
     displayOptions() {
       this.displayPollOpts = !this.displayPollOpts;
     },
-    showPopup() {
+    togglePopup() {
       this.displayPopup = !this.displayPopup
     },
     deletePoll() {
       usePollStore().deleteAndUpdateList(this.poll._id, this.poll.author);
+      this.$emit('popPoll', this.poll._id)
+      this.displayPopup = !this.displayPopup
     }
   },
 };
@@ -74,11 +67,13 @@ div.poll-item {
   border-radius: 16px;
   background-color: $dark-s1;
   padding: 8px 16px 8px 16px;
-  margin-top: 32px;
   transition: background-color 0.15s;
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 420px;
+  margin: 0 auto;
+  margin-top: 32px;
 
   &:hover {
     background-color: $dark-s2;
@@ -107,9 +102,11 @@ div.poll-item {
     flex-direction: row;
     line-height: 1;
     justify-content: space-evenly;
+
     div.status {
       display: flex;
       flex-direction: row;
+
       div.status-ball {
         width: 16px;
         height: 16px;
@@ -134,6 +131,7 @@ div.poll-item {
     position: absolute;
     top: 8px;
     right: 8px;
+
     &:hover {
       cursor: pointer;
     }
@@ -144,24 +142,27 @@ div.poll-item {
     flex-direction: row;
     position: absolute;
     top: 40px;
-    right: 16px;
-    width: 128px;
+    right: 0;
     background-color: $dark;
     border-radius: 8px;
-    border: 1.5px solid $dark-light;
+
     &:hover {
       cursor: pointer;
     }
-    p {
-      flex: 0.6;
-      margin: 8px 0 8px 4px;
-      font-weight: bolder;
-    }
+
     img {
-      flex: 0.4;
       position: absolute;
       top: 10px;
+      padding: 8px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $dark-s1;
+        border-radius: 100%;
+        padding: 8px;
+      }
     }
+
   }
 }
 </style>

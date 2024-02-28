@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <div v-if="pollList && pollList.length >= 1" class="poll-view">
-      <div class="poll-list" v-for="poll in pollList" :key="poll._id">
-        <PollItem :poll="poll" />
+    <div v-if="pollList && pollList.length >= 1" class="poll-list">
+      <div class="poll-item" v-for="poll in pollList" :key="poll._id">
+        <PollItem :poll="poll" @popPoll="updatePoll(pollId)" />
       </div>
     </div>
     <div v-else class="no-poll">
@@ -37,18 +37,30 @@ export default {
       pollList: [],
     };
   },
+  methods: {
+    updatePoll(pollId) {
+      console.log(pollId)
+      this.pollList = this.pollList.map(poll => {
+        poll._id != pollId
+      })
+    }
+  },
   mounted() {
     const token = localStorage.getItem('token')
-    axios
-      .post(`${process.env.VUE_APP_API_URL}/syncPollList`, {
-        token: token,
-      })
-      .then((response) => {
-        if (response.data.pollList && response.data.pollList.length >= 1) {
-          this.pollList = response.data.pollList;
-        }
-      })
-      .catch((res) => console.log(res));
+    try {
+      axios
+        .post(`${process.env.VUE_APP_API_URL}/syncPollList`, {
+          token: token,
+        })
+        .then((response) => {
+          if (response.data.pollList && response.data.pollList.length >= 1) {
+            this.pollList = response.data.pollList;
+          }
+        })
+        .catch((res) => console.log(res));
+    } catch (error) {
+      console.log(error)
+    }
   },
   beforeMount() {
     if (!this.$props.user) {
@@ -84,7 +96,12 @@ div.home {
 
   div.poll-list {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+
+    div.poll-item {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 </style>
