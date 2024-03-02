@@ -198,7 +198,7 @@ div.config-box {
         width: 200px;
         margin: 0 auto;
         padding: 8px;
-        border-radius: 8px;
+        border-radius: 16px;
         border: 3px solid $primary;
         height: 32px;
 

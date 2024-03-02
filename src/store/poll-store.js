@@ -5,16 +5,24 @@ export const usePollStore = defineStore("poll", {
   state: () => ({
     poll: null,
     poll_list: [],
+    metricsPoll: null
   }),
   getters: {
     get_poll: (state) => state.poll,
     get_poll_list: (state) => state.poll_list,
+    get_metrics_poll: (state) => state.metricsPoll,
   },
   actions: {
     update_poll(new_poll) {
       this.poll = new_poll;
     },
     remove_poll() {
+      this.poll = null;
+    },
+    update_metricsPoll(new_metricsPoll) {
+      this.metricsPoll = new_metricsPoll;
+    },
+    remove_metricsPoll() {
       this.poll = null;
     },
     sync_poll(token) {

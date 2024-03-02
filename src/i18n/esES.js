@@ -37,7 +37,7 @@ export default {
                 no_account: "¿Aun no tienes cuenta?",
                 already_account: "¿Ya tienes cuenta?",
                 create_account: "Crear cuenta"
-            },
+            },  
             signup: {
                 title: "Crear cuenta",
                 user: "Usuario",
@@ -54,7 +54,7 @@ export default {
         }
     },
     components: {
-        poll_btn: "Encuestar",
+        poll_btn: "Nueva",
         topnav_portrait: {
             poll: "Encuestas",
             metrics: "Métricas",

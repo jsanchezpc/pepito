@@ -55,7 +55,7 @@ export default {
     },
   },
   components: {
-    poll_btn: "Umfragen",
+    poll_btn: "Neu",
     topnav_portrait: {
       poll: "Umfragen",
       metrics: "Metriken",

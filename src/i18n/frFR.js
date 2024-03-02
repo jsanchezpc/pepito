@@ -55,7 +55,7 @@ export default {
     },
   },
   components: {
-    poll_btn: "Sondage",
+    poll_btn: "Nouveau",
     topnav_portrait: {
       poll: "Sondages",
       metrics: "Métriques",
