@@ -84,9 +84,9 @@ export default {
       }
     },
     deletePoll() {
-      usePollStore().deleteAndUpdateList(this.poll._id, this.poll.author);
-      this.$emit("popPoll", this.poll._id);
+      this.$emit("popPoll", this.$props.poll._id);
       this.displayPopup = !this.displayPopup;
+      usePollStore().deleteAndUpdateList(this.$props.poll._id, this.$props.poll.author);
     },
   },
 };

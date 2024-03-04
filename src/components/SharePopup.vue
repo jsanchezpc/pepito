@@ -3,6 +3,18 @@
   <div class="popup-container">
     <div class="share-popup">
       <h1>Share</h1>
+      <div class="share-link">
+        <!-- link is already generated when creating a poll -->
+        <!-- <div v-if="waitAnimation" class="waiting-for">
+          <LottieAnimation
+            class="wait-lottie"
+            :animation-data="waitIcon"
+            :auto-play="true"
+            :loop="true"
+          />
+          <h3>Generating link, please wait...</h3>
+        </div> -->
+      </div>
       <div class="close">
         <div class="close-btn" @click="closePopup()">Cerrar</div>
       </div>
@@ -11,8 +23,20 @@
 </template>
 
 <script>
+import wait2Json from "@/assets/wait2.json";
+// import { LottieAnimation } from "lottie-web-vue";
 export default {
   name: "SharePopup",
+  data() {
+    return {
+      waitIcon: wait2Json,
+      waitAnimation: true,
+    };
+  },
+//   components: {
+//     LottieAnimation,
+//   },
+  mounted() {},
   methods: {
     closePopup() {
       this.$emit("closePopup");
@@ -43,6 +67,23 @@ div.popup-container {
   display: grid;
   place-content: center;
   div.share-popup {
+    h1 {
+      text-align: center;
+    }
+
+    div.share-link {
+      div.waiting-for {
+        .wait-lottie {
+          width: 10em;
+          margin: 0 auto;
+        }
+
+        h3 {
+          text-align: center;
+          font-weight: 300;
+        }
+      }
+    }
     div.close {
       text-align: center;
       font-size: 1.2em;
@@ -53,7 +94,9 @@ div.popup-container {
         background-color: $dark;
         border-radius: 8px;
         color: $primary-light;
+        transition: background-color 0.3s;
         &:hover {
+          color: $dark;
           background-color: $dark-light;
         }
       }
