@@ -17,7 +17,7 @@ export default {
       greetings_message: "Bonjour",
     },
     metrics: {
-      no_poll_message: "Commencez par créer un sondage !",
+      no_poll_message: "Le sondage n'a pas pu être chargé ou n'existe pas.",
     },
     create_poll: {
       title: "Titre du sondage",

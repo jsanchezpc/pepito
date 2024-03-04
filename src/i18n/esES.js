@@ -17,7 +17,7 @@ export default {
 
         },
         metrics: {
-            no_poll_message: "¡Empieza creando una encuesta!",
+            no_poll_message: "No se ha podido cargar la encuesta o no existe.",
         },
         create_poll: {
             title: "Título de la encuesta",

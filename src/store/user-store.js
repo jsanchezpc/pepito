@@ -27,7 +27,6 @@ export const useUserStore = defineStore('user', {
             }
         },
         update_user(new_user) {
-            // this.remove_token()
             this.user = new_user
         },
         remove_user() {

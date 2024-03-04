@@ -17,7 +17,7 @@ export default {
       greetings_message: "Olá",
     },
     metrics: {
-      no_poll_message: "Comece criando uma pesquisa!",
+      no_poll_message: "A pesquisa não pôde ser carregada ou não existe.",
     },
     create_poll: {
       title: "Título da pesquisa",

@@ -17,7 +17,8 @@ export default {
       greetings_message: "Hallo",
     },
     metrics: {
-      no_poll_message: "Beginnen Sie mit der Erstellung einer Umfrage!",
+      no_poll_message:
+        "Die Umfrage konnte nicht geladen werden oder existiert nicht.",
     },
     create_poll: {
       title: "Umfragetitel",

@@ -17,7 +17,7 @@ export default {
       greetings_message: "Hello",
     },
     metrics: {
-      no_poll_message: "Start by creating a poll!",
+      no_poll_message: "The survey could not be loaded or does not exist.",
     },
     create_poll: {
       title: "Poll Title",

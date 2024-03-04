@@ -82,10 +82,15 @@ export default {
         });
     },
     logOut() {
-      this.$emit("displayConfig");
-      useUserStore().remove_user();
-      useUserStore().remove_token();
-      this.$router.push("/login");
+      try {
+        useUserStore().remove_user();
+        useUserStore().remove_token();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.$emit("displayConfig");
+        this.$router.push("/login");
+      }
     },
   },
 };

@@ -14,18 +14,23 @@
       <div class="poll-date">
         <span>13/02/2021</span>
       </div>
-      <div class="share">
+      <div class="share" @click="togglePopup('share')">
         <div :class="{ 'share-hover': shareHover }"></div>
         <span>Compartir</span>
       </div>
     </div>
     <img @click="displayOptions()" :src="dotsIcon" alt="delete question" />
     <div v-if="displayPollOpts" class="poll-options">
-      <img :src="trashIcon" @click="togglePopup()" />
+      <img :src="trashIcon" @click="togglePopup('delete')" />
     </div>
     <!-- <details>answer details here</details> -->
   </div>
-  <DeletePopup v-if="displayPopup" @delete="deletePoll(poll._id, poll.author)" @closePopup="togglePopup()" />
+  <DeletePopup
+    v-if="displayPopup"
+    @delete="deletePoll(poll._id, poll.author)"
+    @closePopup="togglePopup('delete')"
+  />
+  <SharePopup v-if="showSharePopup" @closePopup="togglePopup('share')" />
 </template>
 
 <script>
@@ -34,6 +39,7 @@ import trashSvg from "@/assets/trash.svg";
 import shareSvg from "@/assets/share.svg";
 import { usePollStore } from "@/store/poll-store";
 import DeletePopup from "@/components/DeletePopup.vue";
+import SharePopup from "@/components/SharePopup.vue";
 
 export default {
   name: "PollItem",
@@ -42,6 +48,7 @@ export default {
   },
   components: {
     DeletePopup,
+    SharePopup,
   },
   data() {
     return {
@@ -50,30 +57,37 @@ export default {
       shareIcon: shareSvg,
       displayPollOpts: false,
       displayPopup: false,
+      showSharePopup: false,
     };
   },
   methods: {
-    // openPoll() {
-    //   try {
-    //     usePollStore
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    //   finally {
-    //     this.$router.push('/metrics')
-    //   }
-    // },
+    openPoll() {
+      try {
+        if (usePollStore().get_metrics_poll) {
+          usePollStore().remove_metricsPoll();
+        }
+        usePollStore().update_metricsPoll(this.$props.poll);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.$router.push("/metrics");
+      }
+    },
     displayOptions() {
       this.displayPollOpts = !this.displayPollOpts;
     },
-    togglePopup() {
-      this.displayPopup = !this.displayPopup
+    togglePopup(popupName) {
+      if (popupName === "delete") {
+        this.displayPopup = !this.displayPopup;
+      } else if (popupName === "share") {
+        this.showSharePopup = !this.showSharePopup;
+      }
     },
     deletePoll() {
       usePollStore().deleteAndUpdateList(this.poll._id, this.poll.author);
-      this.$emit('popPoll', this.poll._id)
-      this.displayPopup = !this.displayPopup
-    }
+      this.$emit("popPoll", this.poll._id);
+      this.displayPopup = !this.displayPopup;
+    },
   },
 };
 </script>
@@ -162,14 +176,13 @@ div.poll-item {
       border-radius: 8px;
       transition: background-color 2s;
 
-
       &:hover {
         background-color: $dark-s1;
         cursor: pointer;
 
         div {
           width: 24px;
-          background-image: url('~@/assets/share-hover.svg');
+          background-image: url("~@/assets/share-hover.svg");
           height: 24px;
           background-position: center;
           background-repeat: no-repeat;
@@ -183,14 +196,12 @@ div.poll-item {
 
       div {
         width: 24px;
-        background-image: url('~@/assets/share.svg');
+        background-image: url("~@/assets/share.svg");
         height: 24px;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
       }
-
-
 
       span {
         margin-left: 4px;
@@ -198,7 +209,6 @@ div.poll-item {
         font-size: 1.1em;
         color: $primary-s1;
       }
-
     }
   }
 
@@ -239,7 +249,6 @@ div.poll-item {
         padding: 8px;
       }
     }
-
   }
 }
 
@@ -329,14 +338,13 @@ div.poll-item {
         border-radius: 8px;
         transition: background-color 2s;
 
-
         &:hover {
           background-color: $dark-s1;
           cursor: pointer;
 
           div {
             width: 16px;
-            background-image: url('~@/assets/share-hover.svg');
+            background-image: url("~@/assets/share-hover.svg");
             height: 16px;
             background-position: center;
             background-repeat: no-repeat;
@@ -350,14 +358,12 @@ div.poll-item {
 
         div {
           width: 16px;
-          background-image: url('~@/assets/share.svg');
+          background-image: url("~@/assets/share.svg");
           height: 16px;
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
         }
-
-
 
         span {
           margin-left: 4px;
@@ -365,7 +371,6 @@ div.poll-item {
           font-size: 0.8em;
           color: $primary-s1;
         }
-
       }
     }
 
@@ -406,7 +411,6 @@ div.poll-item {
           padding: 8px;
         }
       }
-
     }
   }
 }
