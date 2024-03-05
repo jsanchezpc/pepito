@@ -26,7 +26,7 @@
     <!-- <details>answer details here</details> -->
   </div>
   <DeletePopup v-if="displayPopup" @delete="deletePoll(poll._id, poll.author)" @closePopup="togglePopup('delete')" />
-  <SharePopup v-if="showSharePopup" @closePopup="togglePopup('share')" />
+  <SharePopup v-if="showSharePopup" :shareLink="poll.shareLink" @closePopup="togglePopup('share')" />
 </template>
 
 <script>

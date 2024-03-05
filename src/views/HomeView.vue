@@ -2,9 +2,8 @@
   <div class="home">
     <div v-if="pollList && pollList.length >= 1" class="poll-list">
       <div class="poll-item" v-for="poll in pollList" :key="poll._id">
-        <PollItem :poll="poll" @popPoll="deletePollItem" />
+        <PollItem :poll="poll" @popPoll="deletePollItem()" />
       </div>
-
     </div>
     <div v-else class="no-poll">
       <img :src="draw" alt="poll draw" />

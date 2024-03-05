@@ -4,16 +4,8 @@
     <div class="share-popup">
       <h1>Share</h1>
       <div class="share-link">
-        <!-- link is already generated when creating a poll -->
-        <!-- <div v-if="waitAnimation" class="waiting-for">
-          <LottieAnimation
-            class="wait-lottie"
-            :animation-data="waitIcon"
-            :auto-play="true"
-            :loop="true"
-          />
-          <h3>Generating link, please wait...</h3>
-        </div> -->
+        <input @click="copyLinkToClipboard()" readonly="readonly" type="text" :value="shareLink">
+        <span>Click to copy to clipboard</span>
       </div>
       <div class="close">
         <div class="close-btn" @click="closePopup()">Cerrar</div>
@@ -27,19 +19,25 @@ import wait2Json from "@/assets/wait2.json";
 // import { LottieAnimation } from "lottie-web-vue";
 export default {
   name: "SharePopup",
+  props: {
+    shareLink: String
+  },
   data() {
     return {
       waitIcon: wait2Json,
       waitAnimation: true,
     };
   },
-//   components: {
-//     LottieAnimation,
-//   },
-  mounted() {},
+  //   components: {
+  //     LottieAnimation,
+  //   },
+  mounted() { },
   methods: {
     closePopup() {
       this.$emit("closePopup");
+    },
+    async copyLinkToClipboard() {
+      await navigator.clipboard.writeText(this.$props.shareLink);
     },
   },
 };
@@ -66,24 +64,41 @@ div.popup-container {
   z-index: 8;
   display: grid;
   place-content: center;
+
   div.share-popup {
     h1 {
       text-align: center;
     }
 
     div.share-link {
-      div.waiting-for {
-        .wait-lottie {
-          width: 10em;
-          margin: 0 auto;
-        }
+      margin-bottom: 32px;
 
-        h3 {
-          text-align: center;
-          font-weight: 300;
+      input {
+        font-size: 1.5em;
+        color: $dark-light;
+        padding: 16px;
+        border-radius: 8px;
+        border: none;
+        background-color: $dark;
+        text-align: left;
+        background-image: url('~@/assets/copy.svg');
+        background-position: calc(100% - 8px);
+        background-size: 32px;
+        background-repeat: no-repeat;
+
+        &:hover {
+          cursor: pointer;
         }
       }
+
+      span {
+        text-align: center;
+        width: 100%;
+        display: block;
+        margin-top: 4px;
+      }
     }
+
     div.close {
       text-align: center;
       font-size: 1.2em;
@@ -95,6 +110,8 @@ div.popup-container {
         border-radius: 8px;
         color: $primary-light;
         transition: background-color 0.3s;
+        padding: 4px;
+
         &:hover {
           color: $dark;
           background-color: $dark-light;
