@@ -1,5 +1,5 @@
 <template>
-  <div class="poll-item">
+  <div v-if="poll" class="poll-item">
     <div class="poll-meta" @click="openPoll()">
       <h2>{{ poll.title }}</h2>
       <p class="poll-description">{{ poll.description }}</p>
@@ -25,11 +25,7 @@
     </div>
     <!-- <details>answer details here</details> -->
   </div>
-  <DeletePopup
-    v-if="displayPopup"
-    @delete="deletePoll(poll._id, poll.author)"
-    @closePopup="togglePopup('delete')"
-  />
+  <DeletePopup v-if="displayPopup" @delete="deletePoll(poll._id, poll.author)" @closePopup="togglePopup('delete')" />
   <SharePopup v-if="showSharePopup" @closePopup="togglePopup('share')" />
 </template>
 
@@ -84,9 +80,10 @@ export default {
       }
     },
     deletePoll() {
-      this.$emit("popPoll", this.$props.poll._id);
-      this.displayPopup = !this.displayPopup;
-      usePollStore().deleteAndUpdateList(this.$props.poll._id, this.$props.poll.author);
+      const pollId = this.$props.poll._id;
+      this.$emit("popPoll", pollId);
+      this.displayPopup = !this.displayPopup; 
+      usePollStore().deleteAndUpdateList(pollId, this.$props.poll.author);
     },
   },
 };

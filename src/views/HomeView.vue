@@ -2,8 +2,9 @@
   <div class="home">
     <div v-if="pollList && pollList.length >= 1" class="poll-list">
       <div class="poll-item" v-for="poll in pollList" :key="poll._id">
-        <PollItem :poll="poll" @popPoll="updatePoll(pollId)" />
+        <PollItem :poll="poll" @popPoll="deletePollItem" />
       </div>
+
     </div>
     <div v-else class="no-poll">
       <img :src="draw" alt="poll draw" />
@@ -38,12 +39,14 @@ export default {
     };
   },
   methods: {
-    updatePoll(pollId) {
-      console.log(pollId)
-      this.pollList = this.pollList.map(poll => {
-        poll._id != pollId
-      })
-    }
+    // updatePoll(pollId) {
+    //   this.pollList = this.pollList.map(poll => {
+    //     return poll._id != pollId
+    //   })
+    // }
+    deletePollItem(pollId) {
+      this.pollList = this.pollList.filter(poll => poll._id !== pollId);
+    },
   },
   mounted() {
     const token = localStorage.getItem('token')
