@@ -82,7 +82,7 @@ export default {
     deletePoll() {
       const pollId = this.$props.poll._id;
       this.$emit("popPoll", pollId);
-      this.displayPopup = !this.displayPopup; 
+      this.displayPopup = !this.displayPopup;
       usePollStore().deleteAndUpdateList(pollId, this.$props.poll.author);
     },
   },
@@ -108,8 +108,10 @@ div.poll-item {
 
   div.poll-meta {
     h2 {
-      font-size: 2.5em;
-      font-weight: 700;
+      font-size: 2em;
+      font-family: "Anton", sans-serif;
+      font-weight: 400;
+      font-style: normal;
       margin: 0;
       color: $primary-s1;
       text-align: left;

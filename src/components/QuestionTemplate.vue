@@ -70,7 +70,6 @@ div.answer-template {
       margin-bottom: 16px;
       margin-top: 16px;
       border-radius: 0px;
-      border-bottom: 2px dotted $primary-s1;
 
       &::-webkit-scrollbar, &::-webkit-scrollbar-track, &::-webkit-scrollbar-thumb {
         display: none;

@@ -1,7 +1,7 @@
 <template>
   <div class="metrics-view">
     <div v-if="poll" class="metrics-list">
-    {{ poll }}
+      <PollComponent :poll="poll" />
     </div>
     <div v-else class="no-poll">
       <img :src="draw" alt="poll draw" />
@@ -13,12 +13,14 @@
 
 <script>
 import PollBtn from "@/components/PollBtn.vue";
+import PollComponent from "@/components/PollComponent.vue"
 import drawSvg from "@/assets/no-ans.svg";
 import { usePollStore } from "@/store/poll-store";
 export default {
   name: "MetricsView",
   components: {
     PollBtn,
+    PollComponent
   },
   data() {
     return {
@@ -34,16 +36,20 @@ export default {
 div.metrics-view {
   width: 80dvw;
   margin: 0 auto;
-  height: calc(100dvh - 7dvh);
+  height: auto;
+
+
   div.no-poll {
     position: relative;
     display: grid;
     place-content: center;
     height: 100%;
+
     img {
       width: 400px;
       margin: 0 auto;
     }
+
     h1 {
       text-align: center;
       font-weight: 300;
