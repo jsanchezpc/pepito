@@ -41,8 +41,8 @@ export default {
     methods: {
         savePoll() {
             axios
-                .post(`${process.env.VUE_APP_API_URL}/createPoll`, {
-                    author: this.user.username,
+                .post(`${process.env.VUE_APP_API_URL}/editPoll`, {
+                    id: this.poll._id,
                     title: this.$props.poll.title,
                     description: this.$props.poll.description,
                     questions: this.poll,

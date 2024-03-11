@@ -116,6 +116,7 @@ div.poll-item {
       color: $primary-s1;
       text-align: left;
       cursor: pointer;
+      font-variant: small-caps;
     }
 
     p.poll-description {
@@ -126,7 +127,7 @@ div.poll-item {
       overflow: hidden;
       color: $primary-light;
       font-weight: 300;
-      font-size: 1.4em;
+      font-size: 1.2em;
       cursor: pointer;
       margin-top: 0;
     }
@@ -207,6 +208,7 @@ div.poll-item {
         font-weight: bolder;
         font-size: 1.1em;
         color: $primary-s1;
+        font-variant: all-small-caps;
       }
     }
   }
@@ -276,6 +278,7 @@ div.poll-item {
         color: $primary-s1;
         text-align: left;
         cursor: pointer;
+        font-variant: small-caps;
       }
 
       p.poll-description {
@@ -369,6 +372,7 @@ div.poll-item {
           font-weight: bolder;
           font-size: 0.8em;
           color: $primary-s1;
+          font-variant: normal ;
         }
       }
     }
