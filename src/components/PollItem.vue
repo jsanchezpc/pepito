@@ -262,7 +262,7 @@ div.poll-item {
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 80%;
+    width: calc(100% - 64px);
     margin: 0 auto;
     margin-top: 32px;
 
@@ -273,12 +273,13 @@ div.poll-item {
     div.poll-meta {
       h2 {
         font-size: 2em;
-        font-weight: 700;
+        font-weight: 600;
         margin: 0;
         color: $primary-s1;
         text-align: left;
         cursor: pointer;
-        font-variant: small-caps;
+        // font-variant: small-caps;
+        font-family: "Nunito Sans", sans-serif;
       }
 
       p.poll-description {

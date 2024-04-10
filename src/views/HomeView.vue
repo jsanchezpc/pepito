@@ -106,4 +106,12 @@ div.home {
     }
   }
 }
+
+@media screen and (max-width: 785px) {
+  div.home {
+    width: 100dvw;
+    margin: 0 auto;
+    height: calc(100dvh - 7dvh);
+  }
+}
 </style>
